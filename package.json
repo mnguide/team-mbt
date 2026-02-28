@@ -7,7 +7,7 @@
     "dev": "granite dev",
     "build": "granite build",
     "vite:dev": "vite",
-    "vite:build": "vite build"
+    "vite:build": "vite build && cp dist/index.html dist/404.html"
   },
   "dependencies": {
     "@apps-in-toss/web-framework": "^1.14.0",
