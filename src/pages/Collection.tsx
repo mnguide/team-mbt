@@ -117,7 +117,7 @@ export default function Collection({ myType, members, onAddMember, onRemoveMembe
                 )}
                 {allMembers.length > 1 && !editMode && (
                   <span className={`absolute top-1.5 right-1.5 text-[9px] font-bold px-1.5 py-0.5 rounded-full ${getGradeBgClass(avgGrade)}`}>
-                    {avgGrade}
+                    avg {insight.avgScore}
                   </span>
                 )}
               </button>
