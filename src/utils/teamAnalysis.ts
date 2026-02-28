@@ -1,6 +1,23 @@
 import { calculateChemistry } from './mbti';
-import type { Grade, ChemistryResult } from './mbti';
+import type { MbtiType, Grade, ChemistryResult } from './mbti';
 import type { TeamMember } from '../hooks/useTeamStore';
+
+export const ME_ID = '__me__';
+
+export function createMeMember(myType: MbtiType): TeamMember {
+  return {
+    id: ME_ID,
+    nickname: '나',
+    mbtiType: myType,
+    role: 'peer',
+    addedAt: 0,
+  };
+}
+
+export function buildAllMembers(myType: MbtiType | null, members: TeamMember[]): TeamMember[] {
+  if (!myType) return members;
+  return [createMeMember(myType), ...members];
+}
 
 export interface PairResult {
   memberA: TeamMember;

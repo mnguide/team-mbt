@@ -2,12 +2,13 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AddMemberModal from '../components/AddMemberModal';
 import { getTypeInfo } from '../utils/mbti';
-import { getGradeBgClass } from '../utils/teamAnalysis';
+import { getGradeBgClass, buildAllMembers, ME_ID } from '../utils/teamAnalysis';
 import { computeAllPairs, computeMemberInsight } from '../utils/teamAnalysis';
 import type { MbtiType, Role } from '../utils/mbti';
 import type { TeamMember } from '../hooks/useTeamStore';
 
 interface CollectionProps {
+  myType: MbtiType | null;
   members: TeamMember[];
   onAddMember: (nickname: string, mbtiType: MbtiType, role: Role) => void;
   onRemoveMember: (id: string) => void;
@@ -22,13 +23,14 @@ const ROLE_LABELS: Record<string, string> = {
   junior: '후배',
 };
 
-export default function Collection({ members, onAddMember, onRemoveMember }: CollectionProps) {
+export default function Collection({ myType, members, onAddMember, onRemoveMember }: CollectionProps) {
   const navigate = useNavigate();
   const [modalOpen, setModalOpen] = useState(false);
   const [editMode, setEditMode] = useState(false);
   const [deleteTarget, setDeleteTarget] = useState<string | null>(null);
 
-  const allPairs = computeAllPairs(members);
+  const allMembers = buildAllMembers(myType, members);
+  const allPairs = computeAllPairs(allMembers);
   const progress = Math.round((members.length / MAX_MEMBERS) * 100);
 
   return (
@@ -50,7 +52,9 @@ export default function Collection({ members, onAddMember, onRemoveMember }: Col
               {editMode ? '완료' : '편집'}
             </button>
           )}
-          <span className="text-sm text-gray-500">{members.length}/{MAX_MEMBERS}</span>
+          <span className="text-sm text-gray-500">
+            {myType ? members.length + 1 : members.length}/{MAX_MEMBERS}
+          </span>
         </div>
       </div>
 
@@ -61,7 +65,15 @@ export default function Collection({ members, onAddMember, onRemoveMember }: Col
         />
       </div>
 
-      {members.length >= 2 && (
+      {!myType && members.length === 0 && (
+        <div className="mb-4 p-3 bg-amber-50 rounded-xl">
+          <p className="text-xs text-amber-700">
+            먼저 <button onClick={() => navigate('/my-card')} className="font-bold underline">내 유형</button>을 설정하면 본인도 관계도에 포함됩니다.
+          </p>
+        </div>
+      )}
+
+      {allMembers.length >= 2 && (
         <div className="flex gap-2 mb-6">
           <button
             onClick={() => navigate('/relationship-map')}
@@ -79,7 +91,8 @@ export default function Collection({ members, onAddMember, onRemoveMember }: Col
       )}
 
       <div className="grid grid-cols-3 gap-3 mb-6">
-        {members.map(member => {
+        {allMembers.map(member => {
+          const isMe = member.id === ME_ID;
           const info = getTypeInfo(member.mbtiType);
           const insight = computeMemberInsight(member, allPairs);
           const avgGrade = scoreToGrade(insight.avgScore);
@@ -88,21 +101,27 @@ export default function Collection({ members, onAddMember, onRemoveMember }: Col
             <div key={member.id} className="relative">
               <button
                 onClick={() => navigate(`/member/${member.id}`)}
-                className="w-full bg-white rounded-2xl p-3 text-center shadow-sm border border-gray-100 active:scale-[0.97] transition-transform"
+                className={`w-full rounded-2xl p-3 text-center shadow-sm active:scale-[0.97] transition-transform ${
+                  isMe
+                    ? 'bg-blue-50 border-2 border-blue-300'
+                    : 'bg-white border border-gray-100'
+                }`}
               >
                 <span className="text-3xl">{info.emoji}</span>
                 <p className="text-xs font-bold text-gray-800 mt-1 truncate">
-                  {member.nickname}
+                  {isMe ? '나' : member.nickname}
                 </p>
                 <p className="text-[10px] text-gray-400">{member.mbtiType}</p>
-                <span className="text-[10px] text-gray-400">{ROLE_LABELS[member.role]}</span>
-                {members.length > 1 && !editMode && (
+                {!isMe && (
+                  <span className="text-[10px] text-gray-400">{ROLE_LABELS[member.role]}</span>
+                )}
+                {allMembers.length > 1 && !editMode && (
                   <span className={`absolute top-1.5 right-1.5 text-[9px] font-bold px-1.5 py-0.5 rounded-full ${getGradeBgClass(avgGrade)}`}>
                     {avgGrade}
                   </span>
                 )}
               </button>
-              {editMode && (
+              {editMode && !isMe && (
                 <button
                   onClick={() => setDeleteTarget(member.id)}
                   className="absolute -top-1.5 -right-1.5 w-6 h-6 bg-red-500 text-white rounded-full text-xs font-bold flex items-center justify-center shadow-sm"
@@ -125,7 +144,7 @@ export default function Collection({ members, onAddMember, onRemoveMember }: Col
         )}
       </div>
 
-      {members.length === 0 && (
+      {!myType && members.length === 0 && (
         <div className="text-center py-12">
           <p className="text-4xl mb-3">📋</p>
           <p className="text-gray-400 text-sm">팀원을 추가해서 도감을 채워보세요!</p>

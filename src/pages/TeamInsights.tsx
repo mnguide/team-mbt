@@ -1,24 +1,31 @@
 import { useNavigate } from 'react-router-dom';
 import MbtiDistributionChart from '../components/MbtiDistributionChart';
 import { getTypeInfo } from '../utils/mbti';
-import { computeAllPairs, computeTeamInsight, getGradeBgClass, getGradeColor } from '../utils/teamAnalysis';
+import { buildAllMembers, ME_ID, computeAllPairs, computeTeamInsight, getGradeBgClass, getGradeColor } from '../utils/teamAnalysis';
 import type { TeamMember } from '../hooks/useTeamStore';
-import type { Grade } from '../utils/mbti';
+import type { MbtiType, Grade } from '../utils/mbti';
 
 interface TeamInsightsProps {
+  myType: MbtiType | null;
   members: TeamMember[];
 }
 
-export default function TeamInsights({ members }: TeamInsightsProps) {
+function memberLabel(m: TeamMember): string {
+  return m.id === ME_ID ? '나' : m.nickname;
+}
+
+export default function TeamInsights({ myType, members }: TeamInsightsProps) {
   const navigate = useNavigate();
 
-  if (members.length < 2) {
+  const allMembers = buildAllMembers(myType, members);
+
+  if (allMembers.length < 2) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-white px-6">
         <div className="text-center">
           <p className="text-4xl mb-3">📊</p>
           <p className="text-gray-400 text-sm mb-4">
-            팀 인사이트를 보려면 최소 2명의 멤버가 필요합니다.
+            팀 인사이트를 보려면 최소 2명이 필요합니다.
           </p>
           <button
             onClick={() => navigate('/collection', { replace: true })}
@@ -31,8 +38,8 @@ export default function TeamInsights({ members }: TeamInsightsProps) {
     );
   }
 
-  const allPairs = computeAllPairs(members);
-  const insight = computeTeamInsight(members, allPairs);
+  const allPairs = computeAllPairs(allMembers);
+  const insight = computeTeamInsight(allMembers, allPairs);
 
   const synergyGrade = scoreToGrade(insight.synergyScore);
   const keyConnectorInfo = insight.keyConnector ? getTypeInfo(insight.keyConnector.mbtiType) : null;
@@ -61,7 +68,7 @@ export default function TeamInsights({ members }: TeamInsightsProps) {
           </span>
         </div>
         <p className="text-[10px] text-gray-400 mt-2">
-          총 {insight.totalPairs}개 관계의 평균
+          {allMembers.length}명 · 총 {insight.totalPairs}개 관계의 평균
         </p>
       </div>
 
@@ -97,7 +104,7 @@ export default function TeamInsights({ members }: TeamInsightsProps) {
             <p className="text-[10px] text-gray-400 mb-1">핵심 연결자</p>
             <span className="text-2xl">{keyConnectorInfo.emoji}</span>
             <p className="text-xs font-bold text-gray-800 mt-1">
-              {insight.keyConnector.nickname}
+              {memberLabel(insight.keyConnector)}
             </p>
             <p className="text-[10px] text-emerald-600">팀 평균 궁합 최고</p>
           </button>
@@ -110,7 +117,7 @@ export default function TeamInsights({ members }: TeamInsightsProps) {
             <p className="text-[10px] text-gray-400 mb-1">고립 위험</p>
             <span className="text-2xl">{isolationInfo.emoji}</span>
             <p className="text-xs font-bold text-gray-800 mt-1">
-              {insight.isolationRisk.nickname}
+              {memberLabel(insight.isolationRisk)}
             </p>
             <p className="text-[10px] text-red-500">팀 평균 궁합 최저</p>
           </button>
@@ -131,7 +138,7 @@ export default function TeamInsights({ members }: TeamInsightsProps) {
                   className="text-center active:scale-95 transition-transform"
                 >
                   <span className="text-2xl">{info.emoji}</span>
-                  <p className="text-[10px] font-bold text-gray-700 mt-0.5">{m.nickname}</p>
+                  <p className="text-[10px] font-bold text-gray-700 mt-0.5">{memberLabel(m)}</p>
                   <p className="text-[9px] text-gray-400">{m.mbtiType}</p>
                 </button>
               );
@@ -146,7 +153,7 @@ export default function TeamInsights({ members }: TeamInsightsProps) {
       {/* MBTI Distribution */}
       <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 mb-4">
         <h3 className="text-sm font-bold text-gray-700 mb-3">MBTI 분포</h3>
-        <MbtiDistributionChart members={members} />
+        <MbtiDistributionChart members={allMembers} />
 
         {Object.keys(insight.mbtiDistribution).length > 0 && (
           <div className="mt-4 flex flex-wrap gap-1.5">
@@ -154,7 +161,7 @@ export default function TeamInsights({ members }: TeamInsightsProps) {
               .sort((a, b) => b[1] - a[1])
               .map(([type, count]) => (
                 <span key={type} className="text-[10px] bg-gray-100 text-gray-600 px-2 py-1 rounded-full">
-                  {type} ×{count}
+                  {type} x{count}
                 </span>
               ))}
           </div>

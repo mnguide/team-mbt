@@ -2,11 +2,12 @@ import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import MbtiSelector from '../components/MbtiSelector';
 import { getTypeInfo } from '../utils/mbti';
-import { computeAllPairs, computeMemberInsight, getGradeColor, getGradeBgClass } from '../utils/teamAnalysis';
+import { buildAllMembers, ME_ID, computeAllPairs, computeMemberInsight, getGradeColor, getGradeBgClass } from '../utils/teamAnalysis';
 import type { MbtiType, Role } from '../utils/mbti';
 import type { TeamMember } from '../hooks/useTeamStore';
 
 interface MemberDetailProps {
+  myType: MbtiType | null;
   members: TeamMember[];
   onUpdateMember: (id: string, updates: Partial<Pick<TeamMember, 'nickname' | 'mbtiType' | 'role'>>) => void;
   onRemoveMember: (id: string) => void;
@@ -26,13 +27,16 @@ const ROLES: { value: Role; label: string; emoji: string }[] = [
   { value: 'junior', label: '후배', emoji: '🌱' },
 ];
 
-export default function MemberDetail({ members, onUpdateMember, onRemoveMember }: MemberDetailProps) {
+export default function MemberDetail({ myType, members, onUpdateMember, onRemoveMember }: MemberDetailProps) {
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
   const [editMode, setEditMode] = useState(false);
   const [deleteConfirm, setDeleteConfirm] = useState(false);
 
-  const member = members.find(m => m.id === id);
+  const allMembers = buildAllMembers(myType, members);
+  const member = allMembers.find(m => m.id === id);
+  const isMe = id === ME_ID;
+
   if (!member) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-white">
@@ -47,7 +51,7 @@ export default function MemberDetail({ members, onUpdateMember, onRemoveMember }
   }
 
   const info = getTypeInfo(member.mbtiType);
-  const allPairs = computeAllPairs(members);
+  const allPairs = computeAllPairs(allMembers);
   const insight = computeMemberInsight(member, allPairs);
 
   const relationships = allPairs
@@ -63,7 +67,7 @@ export default function MemberDetail({ members, onUpdateMember, onRemoveMember }
   const cy = starSize / 2;
   const outerR = 70;
 
-  if (editMode) {
+  if (editMode && !isMe) {
     return (
       <EditMemberView
         member={member}
@@ -82,27 +86,32 @@ export default function MemberDetail({ members, onUpdateMember, onRemoveMember }
         <button onClick={() => navigate('/collection', { replace: true })} className="text-gray-400">
           &larr; 도감
         </button>
-        <div className="flex gap-2">
-          <button
-            onClick={() => setEditMode(true)}
-            className="text-sm text-blue-500 font-medium px-3 py-1.5 bg-blue-50 rounded-lg"
-          >
-            수정
-          </button>
-          <button
-            onClick={() => setDeleteConfirm(true)}
-            className="text-sm text-red-500 font-medium px-3 py-1.5 bg-red-50 rounded-lg"
-          >
-            삭제
-          </button>
-        </div>
+        {!isMe && (
+          <div className="flex gap-2">
+            <button
+              onClick={() => setEditMode(true)}
+              className="text-sm text-blue-500 font-medium px-3 py-1.5 bg-blue-50 rounded-lg"
+            >
+              수정
+            </button>
+            <button
+              onClick={() => setDeleteConfirm(true)}
+              className="text-sm text-red-500 font-medium px-3 py-1.5 bg-red-50 rounded-lg"
+            >
+              삭제
+            </button>
+          </div>
+        )}
       </div>
 
       <div className="text-center mb-6">
         <span className="text-5xl">{info.emoji}</span>
-        <h1 className="text-xl font-black text-gray-900 mt-2">{member.nickname}</h1>
+        <h1 className="text-xl font-black text-gray-900 mt-2">
+          {isMe ? '나' : member.nickname}
+          {isMe && <span className="text-sm font-medium text-blue-500 ml-1">(본인)</span>}
+        </h1>
         <p className="text-sm text-gray-500">{member.mbtiType} · {info.title}</p>
-        <p className="text-xs text-gray-400 mt-1">{ROLE_LABELS[member.role]}</p>
+        {!isMe && <p className="text-xs text-gray-400 mt-1">{ROLE_LABELS[member.role]}</p>}
       </div>
 
       <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 mb-4">
@@ -136,6 +145,7 @@ export default function MemberDetail({ members, onUpdateMember, onRemoveMember }
                 const x = cx + outerR * Math.cos(angle);
                 const y = cy + outerR * Math.sin(angle);
                 const partnerInfo = getTypeInfo(rel.partner.mbtiType);
+                const partnerIsMe = rel.partner.id === ME_ID;
                 return (
                   <g key={rel.partner.id}>
                     <line
@@ -144,22 +154,22 @@ export default function MemberDetail({ members, onUpdateMember, onRemoveMember }
                       strokeWidth={rel.chemistry.grade === 'S' || rel.chemistry.grade === 'A' ? 2.5 : 1.5}
                       opacity={0.7}
                     />
-                    <circle cx={x} cy={y} r={16} fill="white" stroke="#e5e7eb" strokeWidth={1} />
+                    <circle cx={x} cy={y} r={16} fill={partnerIsMe ? '#DBEAFE' : 'white'} stroke={partnerIsMe ? '#3B82F6' : '#e5e7eb'} strokeWidth={1} />
                     <text x={x} y={y - 3} textAnchor="middle" fontSize="12">
                       {partnerInfo.emoji}
                     </text>
                     <text x={x} y={y + 9} textAnchor="middle" fontSize="7" fill="#6b7280" fontWeight="600">
-                      {rel.partner.nickname.slice(0, 3)}
+                      {partnerIsMe ? '나' : rel.partner.nickname.slice(0, 3)}
                     </text>
                   </g>
                 );
               })}
-              <circle cx={cx} cy={cy} r={20} fill="#3B82F6" />
+              <circle cx={cx} cy={cy} r={20} fill={isMe ? '#2563EB' : '#3B82F6'} />
               <text x={cx} y={cy - 3} textAnchor="middle" fontSize="14">
                 {info.emoji}
               </text>
               <text x={cx} y={cy + 10} textAnchor="middle" fontSize="7" fill="white" fontWeight="700">
-                {member.nickname.slice(0, 3)}
+                {isMe ? '나' : member.nickname.slice(0, 3)}
               </text>
             </svg>
           </div>
@@ -169,15 +179,21 @@ export default function MemberDetail({ members, onUpdateMember, onRemoveMember }
             <div className="space-y-2">
               {relationships.map(rel => {
                 const partnerInfo = getTypeInfo(rel.partner.mbtiType);
+                const partnerIsMe = rel.partner.id === ME_ID;
                 return (
                   <button
                     key={rel.partner.id}
                     onClick={() => navigate(`/member/${rel.partner.id}`, { replace: true })}
-                    className="w-full flex items-center gap-3 p-3 bg-gray-50 rounded-xl active:bg-gray-100 transition-colors"
+                    className={`w-full flex items-center gap-3 p-3 rounded-xl active:bg-gray-100 transition-colors ${
+                      partnerIsMe ? 'bg-blue-50' : 'bg-gray-50'
+                    }`}
                   >
                     <span className="text-xl">{partnerInfo.emoji}</span>
                     <div className="flex-1 text-left">
-                      <p className="text-sm font-medium text-gray-800">{rel.partner.nickname}</p>
+                      <p className="text-sm font-medium text-gray-800">
+                        {partnerIsMe ? '나' : rel.partner.nickname}
+                        {partnerIsMe && <span className="text-blue-500 text-[10px] ml-1">(본인)</span>}
+                      </p>
                       <p className="text-[10px] text-gray-400">{rel.partner.mbtiType}</p>
                     </div>
                     <div className="text-right">
@@ -199,7 +215,6 @@ export default function MemberDetail({ members, onUpdateMember, onRemoveMember }
         </div>
       )}
 
-      {/* Delete confirmation modal */}
       {deleteConfirm && (
         <div className="fixed inset-0 z-50 flex items-center justify-center">
           <div className="absolute inset-0 bg-black/40" onClick={() => setDeleteConfirm(false)} />
@@ -231,8 +246,6 @@ export default function MemberDetail({ members, onUpdateMember, onRemoveMember }
     </div>
   );
 }
-
-/* ---- Edit sub-view ---- */
 
 function EditMemberView({
   member,

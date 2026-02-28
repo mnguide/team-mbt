@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { getTypeInfo } from '../utils/mbti';
-import { getGradeColor } from '../utils/teamAnalysis';
+import { getGradeColor, ME_ID } from '../utils/teamAnalysis';
 import type { TeamMember } from '../hooks/useTeamStore';
 import type { PairResult } from '../utils/teamAnalysis';
 
@@ -93,7 +93,12 @@ export default function RelationshipGraph({ members, pairs, onMemberClick }: Rel
         {members.map((member, i) => {
           const info = getTypeInfo(member.mbtiType);
           const isSelected = selectedId === member.id;
+          const isMe = member.id === ME_ID;
           const pos = positions[i];
+
+          const fillColor = isSelected ? '#3B82F6' : isMe ? '#DBEAFE' : 'white';
+          const strokeColor = isSelected ? '#2563EB' : isMe ? '#3B82F6' : '#e5e7eb';
+          const label = isMe ? '나' : member.nickname.slice(0, 4);
 
           return (
             <g
@@ -107,10 +112,10 @@ export default function RelationshipGraph({ members, pairs, onMemberClick }: Rel
               <circle
                 cx={pos.x}
                 cy={pos.y}
-                r={isSelected ? 24 : 20}
-                fill={isSelected ? '#3B82F6' : 'white'}
-                stroke={isSelected ? '#2563EB' : '#e5e7eb'}
-                strokeWidth={isSelected ? 2 : 1}
+                r={isSelected ? 24 : isMe ? 22 : 20}
+                fill={fillColor}
+                stroke={strokeColor}
+                strokeWidth={isSelected || isMe ? 2 : 1}
                 style={{ transition: 'all 0.2s' }}
               />
               <text x={pos.x} y={pos.y - 4} textAnchor="middle" fontSize="14">
@@ -122,9 +127,9 @@ export default function RelationshipGraph({ members, pairs, onMemberClick }: Rel
                 textAnchor="middle"
                 fontSize="7"
                 fill={isSelected ? 'white' : '#6b7280'}
-                fontWeight="600"
+                fontWeight={isMe ? '700' : '600'}
               >
-                {member.nickname.slice(0, 4)}
+                {label}
               </text>
             </g>
           );

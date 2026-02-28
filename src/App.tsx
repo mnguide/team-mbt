@@ -93,6 +93,7 @@ export default function App() {
         path="/collection"
         element={
           <Collection
+            myType={store.myType}
             members={store.members}
             onAddMember={store.addMember}
             onRemoveMember={store.removeMember}
@@ -103,6 +104,7 @@ export default function App() {
         path="/member/:id"
         element={
           <MemberDetail
+            myType={store.myType}
             members={store.members}
             onUpdateMember={store.updateMember}
             onRemoveMember={store.removeMember}
@@ -111,11 +113,11 @@ export default function App() {
       />
       <Route
         path="/relationship-map"
-        element={<RelationshipMap members={store.members} />}
+        element={<RelationshipMap myType={store.myType} members={store.members} />}
       />
       <Route
         path="/team-insights"
-        element={<TeamInsights members={store.members} />}
+        element={<TeamInsights myType={store.myType} members={store.members} />}
       />
       <Route path="*" element={<Navigate to="/home" replace />} />
     </Routes>

@@ -1,5 +1,5 @@
 import { getTypeInfo } from '../utils/mbti';
-import { getGradeColor } from '../utils/teamAnalysis';
+import { getGradeColor, ME_ID } from '../utils/teamAnalysis';
 import type { TeamMember } from '../hooks/useTeamStore';
 import type { PairResult } from '../utils/teamAnalysis';
 import type { Grade } from '../utils/mbti';
@@ -37,14 +37,15 @@ export default function ChemistryMatrix({ members, pairs, onCellClick }: Chemist
         {/* Column headers */}
         {members.map(m => {
           const info = getTypeInfo(m.mbtiType);
+          const isMe = m.id === ME_ID;
           return (
             <div
               key={`col-${m.id}`}
-              className="sticky top-0 z-10 bg-white flex flex-col items-center justify-center"
+              className={`sticky top-0 z-10 flex flex-col items-center justify-center ${isMe ? 'bg-blue-50' : 'bg-white'}`}
             >
               <span className="text-sm">{info.emoji}</span>
-              <span className="text-[8px] text-gray-500 leading-tight truncate max-w-full px-0.5">
-                {m.nickname.slice(0, 3)}
+              <span className={`text-[8px] leading-tight truncate max-w-full px-0.5 ${isMe ? 'text-blue-600 font-bold' : 'text-gray-500'}`}>
+                {isMe ? '나' : m.nickname.slice(0, 3)}
               </span>
             </div>
           );
@@ -53,15 +54,16 @@ export default function ChemistryMatrix({ members, pairs, onCellClick }: Chemist
         {/* Rows */}
         {members.map((rowMember, ri) => {
           const rowInfo = getTypeInfo(rowMember.mbtiType);
+          const rowIsMe = rowMember.id === ME_ID;
           return [
             // Row header (sticky)
             <div
               key={`row-${rowMember.id}`}
-              className="sticky left-0 z-10 bg-white flex items-center justify-center gap-1"
+              className={`sticky left-0 z-10 flex items-center justify-center gap-1 ${rowIsMe ? 'bg-blue-50' : 'bg-white'}`}
             >
               <span className="text-sm">{rowInfo.emoji}</span>
-              <span className="text-[8px] text-gray-500 truncate max-w-[28px]">
-                {rowMember.nickname.slice(0, 2)}
+              <span className={`text-[8px] truncate max-w-[28px] ${rowIsMe ? 'text-blue-600 font-bold' : 'text-gray-500'}`}>
+                {rowIsMe ? '나' : rowMember.nickname.slice(0, 2)}
               </span>
             </div>,
             // Cells

@@ -2,22 +2,25 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import RelationshipGraph from '../components/RelationshipGraph';
 import ChemistryMatrix from '../components/ChemistryMatrix';
-import { computeAllPairs } from '../utils/teamAnalysis';
+import { buildAllMembers, computeAllPairs } from '../utils/teamAnalysis';
 import type { TeamMember } from '../hooks/useTeamStore';
+import type { MbtiType } from '../utils/mbti';
 
 interface RelationshipMapProps {
+  myType: MbtiType | null;
   members: TeamMember[];
 }
 
 type ViewMode = 'graph' | 'matrix';
 
-export default function RelationshipMap({ members }: RelationshipMapProps) {
+export default function RelationshipMap({ myType, members }: RelationshipMapProps) {
   const navigate = useNavigate();
   const [mode, setMode] = useState<ViewMode>('graph');
 
-  const allPairs = computeAllPairs(members);
+  const allMembers = buildAllMembers(myType, members);
+  const allPairs = computeAllPairs(allMembers);
 
-  if (members.length < 2) {
+  if (allMembers.length < 2) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-white px-6">
         <div className="text-center">
@@ -70,13 +73,13 @@ export default function RelationshipMap({ members }: RelationshipMapProps) {
       <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100">
         {mode === 'graph' ? (
           <RelationshipGraph
-            members={members}
+            members={allMembers}
             pairs={allPairs}
             onMemberClick={id => navigate(`/member/${id}`, { replace: true })}
           />
         ) : (
           <ChemistryMatrix
-            members={members}
+            members={allMembers}
             pairs={allPairs}
             onCellClick={(aId) => navigate(`/member/${aId}`, { replace: true })}
           />
@@ -84,7 +87,7 @@ export default function RelationshipMap({ members }: RelationshipMapProps) {
       </div>
 
       <p className="text-center text-[10px] text-gray-400 mt-4">
-        총 {allPairs.length}개의 궁합 관계
+        {allMembers.length}명 · 총 {allPairs.length}개의 궁합 관계
       </p>
     </div>
   );
