@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import MbtiDistributionChart from '../components/MbtiDistributionChart';
-import { getTypeInfo } from '../utils/mbti';
+import { getTypeInfo, calculateChemistry, determineTeamType } from '../utils/mbti';
 import { buildAllMembers, ME_ID, computeAllPairs, computeTeamInsight, getGradeBgClass, getGradeColor } from '../utils/teamAnalysis';
 import type { TeamMember } from '../hooks/useTeamStore';
 import type { MbtiType, Grade } from '../utils/mbti';
@@ -40,6 +40,7 @@ export default function TeamInsights({ myType, members }: TeamInsightsProps) {
 
   const allPairs = computeAllPairs(allMembers);
   const insight = computeTeamInsight(allMembers, allPairs);
+  const teamType = determineTeamType(allMembers.map(m => m.mbtiType));
 
   const synergyGrade = scoreToGrade(insight.synergyScore);
   const keyConnectorInfo = insight.keyConnector ? getTypeInfo(insight.keyConnector.mbtiType) : null;
@@ -52,6 +53,13 @@ export default function TeamInsights({ myType, members }: TeamInsightsProps) {
       </button>
 
       <h1 className="text-xl font-black text-gray-900 mb-6">팀 인사이트</h1>
+
+      {/* Team Type */}
+      <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 mb-4 text-center">
+        <span className="text-4xl">{teamType.emoji}</span>
+        <h2 className="text-lg font-black text-gray-900 mt-2">{teamType.name}</h2>
+        <p className="text-sm text-gray-500 mt-1">{teamType.description}</p>
+      </div>
 
       {/* Synergy Score */}
       <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 mb-4 text-center">
@@ -147,6 +155,38 @@ export default function TeamInsights({ myType, members }: TeamInsightsProps) {
           <p className="text-center text-xs text-amber-600 font-medium mt-2">
             평균 {insight.bestTripleScore}점
           </p>
+        </div>
+      )}
+
+      {/* Per-member summary */}
+      {myType && (
+        <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 mb-4">
+          <h3 className="text-sm font-bold text-gray-700 mb-3">나와의 궁합 한줄평</h3>
+          <div className="space-y-2">
+            {members.map(member => {
+              const info = getTypeInfo(member.mbtiType);
+              const chem = calculateChemistry(myType, member.mbtiType, member.role);
+              return (
+                <button
+                  key={member.id}
+                  onClick={() => navigate(`/member/${member.id}`, { replace: true })}
+                  className="w-full flex items-start gap-3 p-3 bg-gray-50 rounded-xl active:bg-gray-100 transition-colors text-left"
+                >
+                  <span className="text-xl">{info.emoji}</span>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2">
+                      <p className="text-sm font-bold text-gray-900">{member.nickname}</p>
+                      <span className="text-[10px] text-gray-400">{member.mbtiType}</span>
+                      <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full ${getGradeBgClass(scoreToGrade(chem.score))}`}>
+                        {chem.grade}
+                      </span>
+                    </div>
+                    <p className="text-xs text-gray-500 mt-0.5">{chem.synergy}</p>
+                  </div>
+                </button>
+              );
+            })}
+          </div>
         </div>
       )}
 

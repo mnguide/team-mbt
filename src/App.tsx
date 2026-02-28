@@ -5,7 +5,6 @@ import MyCard from './pages/MyCard';
 import Chemistry from './pages/Chemistry';
 import ChemistryResult from './pages/ChemistryResult';
 import AiAnalysis from './pages/AiAnalysis';
-import TeamReport from './pages/TeamReport';
 import ObservationQuiz from './pages/ObservationQuiz';
 import Collection from './pages/Collection';
 import MemberDetail from './pages/MemberDetail';
@@ -75,16 +74,7 @@ export default function App() {
           />
         }
       />
-      <Route
-        path="/team-report"
-        element={
-          <TeamReport
-            myType={store.myType}
-            members={store.members}
-            onRemoveMember={store.removeMember}
-          />
-        }
-      />
+      <Route path="/team-report" element={<Navigate to="/team-insights" replace />} />
       <Route
         path="/quiz"
         element={<ObservationQuiz myType={store.myType} />}

@@ -202,10 +202,10 @@ export default function ChemistryResult({
         </button>
 
         <button
-          onClick={() => navigate('/team-report')}
+          onClick={() => navigate('/team-insights')}
           className="w-full py-3 text-blue-500 font-medium text-sm"
         >
-          📊 팀 보고서 보기
+          📊 팀 인사이트 보기
         </button>
       </div>
 

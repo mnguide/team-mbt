@@ -42,8 +42,7 @@ export default function Home() {
           {[
             { emoji: '🎯', label: '내 유형 카드', desc: '16가지 K-직장인' },
             { emoji: '💕', label: '궁합 분석', desc: '동료와의 케미' },
-            { emoji: '📊', label: '팀 보고서', desc: '우리 팀 분석' },
-            { emoji: '📋', label: '팀 도감', desc: '팀원 수집·관계도' },
+            { emoji: '📊', label: '팀 인사이트', desc: '우리 팀 분석' },
           ].map(item => (
             <div key={item.label} className="text-center p-3 rounded-xl bg-white/80">
               <span className="text-2xl">{item.emoji}</span>
