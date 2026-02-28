@@ -89,6 +89,13 @@ export default function RelationshipMap({ myType, members }: RelationshipMapProp
       <p className="text-center text-[10px] text-gray-400 mt-4">
         {allMembers.length}명 · 총 {allPairs.length}개의 궁합 관계
       </p>
+
+      <button
+        onClick={() => navigate('/team-insights', { replace: true })}
+        className="w-full mt-4 py-3.5 bg-white text-gray-700 rounded-2xl font-bold text-sm border border-gray-200 active:scale-[0.98] transition-transform"
+      >
+        📊 팀 인사이트 보기
+      </button>
     </div>
   );
 }
