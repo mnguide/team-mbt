@@ -198,6 +198,258 @@
       "synergy": "ESTP의 행동력 + ISFJ의 세심함 = 빈틈없는 실행",
       "conflict": "ESTP의 돌발 행동에 ISFJ가 스트레스받을 수 있음",
       "specialTip": "ESTP는 미리 알려주고, ISFJ는 유연성을 조금만 늘려보세요"
+    },
+    "INTJ-INTJ": {
+      "grade": "A",
+      "score": 78,
+      "synergy": "전략가 둘이 만나면 회사를 뒤엎을 수 있는 기획력",
+      "conflict": "둘 다 양보를 모르니 사소한 방법론에서 평행선",
+      "specialTip": "목표는 합의하고, 방법은 각자 맡으세요"
+    },
+    "ENFJ-ENFJ": {
+      "grade": "A",
+      "score": 76,
+      "synergy": "서로를 격려하는 최강 응원단, 팀 분위기 최고조",
+      "conflict": "주도권 경쟁이 은근히 치열할 수 있음",
+      "specialTip": "역할을 나누고, 서로의 리더십 스타일을 인정하세요"
+    },
+    "ISTJ-ISTJ": {
+      "grade": "A",
+      "score": 75,
+      "synergy": "체계 × 체계 = 완벽한 프로세스, 실수 제로에 가까움",
+      "conflict": "유연성이 0에 수렴, 변화에 둘 다 저항",
+      "specialTip": "가끔은 틀을 깨는 시도를 함께 해보세요"
+    },
+    "ENFP-ENFP": {
+      "grade": "A",
+      "score": 77,
+      "synergy": "아이디어 핑퐁이 끝나지 않는 창의력 파티",
+      "conflict": "실행? 마감? 그게 뭐였더라... 둘 다 까먹음",
+      "specialTip": "한 명이라도 타이머 역할을 맡아야 살아남습니다"
+    },
+    "INTP-INTJ": {
+      "grade": "S",
+      "score": 90,
+      "synergy": "이론(INTP) + 실행(INTJ) = 지식 기반 최강 콤보",
+      "conflict": "대화가 너무 심오해서 다른 팀원이 못 알아들을 수 있음",
+      "specialTip": "둘만의 세계에 빠지지 말고 가끔 팀에 번역해주세요"
+    },
+    "ESFP-ESFP": {
+      "grade": "A",
+      "score": 75,
+      "synergy": "에너지 × 에너지 = 사무실이 축제, 분위기 최고",
+      "conflict": "진지한 업무 집중 모드가 안 켜질 수 있음",
+      "specialTip": "즐겁게 일하되, 마감 전날만큼은 진지 모드 ON"
+    },
+    "ESTJ-ISTJ": {
+      "grade": "A",
+      "score": 82,
+      "synergy": "체계 위의 추진력, 프로젝트가 칼같이 진행됨",
+      "conflict": "ESTJ의 지시적 스타일에 ISTJ가 속으로 불만 쌓을 수 있음",
+      "specialTip": "ESTJ는 과정도 존중하고, ISTJ는 의견을 말로 표현하세요"
+    },
+    "ENFJ-INTJ": {
+      "grade": "B",
+      "score": 62,
+      "synergy": "비전(ENFJ) + 전략(INTJ) = 목표 달성률 높은 조합",
+      "conflict": "사람 중심 vs 결과 중심 — 우선순위 충돌",
+      "specialTip": "목표는 INTJ가, 과정의 사람 관리는 ENFJ가 맡으세요"
+    },
+    "INFP-ENFJ": {
+      "grade": "S",
+      "score": 92,
+      "synergy": "ENFJ의 리더십 + INFP의 창의성 = 영감 가득한 팀",
+      "conflict": "ENFJ가 너무 밀어붙이면 INFP가 움츠러듦",
+      "specialTip": "ENFJ는 제안으로, INFP는 자기 페이스로 — 결과는 놀라울 것"
+    },
+    "ESTP-ESTP": {
+      "grade": "B",
+      "score": 65,
+      "synergy": "행동파 × 행동파 = 일 벌이는 속도가 광속",
+      "conflict": "둘 다 마무리에 약해서 뒤처리할 사람이 없음",
+      "specialTip": "벌이는 건 최고, 마무리 담당을 반드시 정하세요"
+    },
+    "ISFP-ENFJ": {
+      "grade": "A",
+      "score": 78,
+      "synergy": "ENFJ의 격려가 ISFP의 숨은 재능을 꽃피움",
+      "conflict": "ENFJ의 적극성이 ISFP에게 부담이 될 수 있음",
+      "specialTip": "ENFJ는 한 발 물러서, ISFP가 스스로 나올 때까지 기다려주세요"
+    },
+    "ISTP-ISTP": {
+      "grade": "B",
+      "score": 68,
+      "synergy": "효율의 극치, 말 없이도 척척 일이 진행됨",
+      "conflict": "소통이 너무 없어서 서로 뭐 하는지 모를 수 있음",
+      "specialTip": "주 1회는 진행 상황 공유 시간을 만드세요"
+    },
+    "ENTJ-ESTJ": {
+      "grade": "B",
+      "score": 63,
+      "synergy": "실행력 최강 조합, 목표가 정해지면 무서운 속도",
+      "conflict": "주도권 싸움이 불가피, 둘 다 지시형",
+      "specialTip": "전략은 ENTJ, 실행 관리는 ESTJ로 역할을 나누세요"
+    },
+    "INFJ-INFJ": {
+      "grade": "A",
+      "score": 80,
+      "synergy": "말 안 해도 서로의 감정을 읽는 텔레파시 조합",
+      "conflict": "둘 다 속으로 삭이다가 어느 날 폭발할 수 있음",
+      "specialTip": "정기적으로 속마음을 꺼내는 시간을 만드세요"
+    },
+    "ENTP-ENTP": {
+      "grade": "A",
+      "score": 76,
+      "synergy": "토론이 곧 브레인스토밍, 아이디어가 끝없이 쏟아짐",
+      "conflict": "서로 반박만 하다 결론 없이 끝날 수 있음",
+      "specialTip": "토론 시간제한을 두고, 결론은 반드시 문서로 남기세요"
+    },
+    "ISFJ-INFJ": {
+      "grade": "A",
+      "score": 83,
+      "synergy": "따뜻함(ISFJ) + 통찰력(INFJ) = 팀의 정서적 기둥",
+      "conflict": "둘 다 갈등 회피형이라 문제가 수면 아래로 숨을 수 있음",
+      "specialTip": "불편해도 문제를 직면하는 연습을 함께 하세요"
+    },
+    "ESTJ-ENFP": {
+      "grade": "C",
+      "score": 32,
+      "synergy": "ENFP의 창의력에 ESTJ가 현실적 뼈대를 세워줌",
+      "conflict": "\"규칙을 따라!\" vs \"규칙이 뭐가 중요해~\" 무한 충돌",
+      "specialTip": "ESTJ는 유연성을, ENFP는 마감을 존중하면 최강팀 가능"
+    },
+    "ENTJ-INFP": {
+      "grade": "C",
+      "score": 28,
+      "synergy": "보완적이라 잘 맞으면 최고, 못 맞으면 최악",
+      "conflict": "ENTJ의 직설이 INFP에게는 무기가 됨",
+      "specialTip": "ENTJ는 감정을 존중하고, INFP는 피드백을 성장으로 받아들이세요"
+    },
+    "INTP-ESFJ": {
+      "grade": "C",
+      "score": 35,
+      "synergy": "ESFJ가 INTP를 세상과 연결해주는 다리 역할",
+      "conflict": "\"논리적으로...\" vs \"사람이 먼저지!\" 평행선",
+      "specialTip": "서로의 언어를 배우세요. INTP는 감정을, ESFJ는 논리를"
+    },
+    "ISFP-ESTJ": {
+      "grade": "C",
+      "score": 30,
+      "synergy": "ISFP의 감성이 ESTJ 팀에 인간미를 더해줌",
+      "conflict": "ESTJ의 체계에 ISFP가 갇힌 느낌을 받을 수 있음",
+      "specialTip": "ESTJ는 자율성을 주고, ISFP는 기본 프로세스는 따라주세요"
+    },
+    "ENFP-INFP": {
+      "grade": "S",
+      "score": 90,
+      "synergy": "이상주의 NF 콤비, 의미 있는 일에 함께 불타오름",
+      "conflict": "현실적인 일 처리가 둘 다 약함",
+      "specialTip": "꿈은 함께 꾸되, 실행 계획은 반드시 세우세요"
+    },
+    "ESTP-ENTJ": {
+      "grade": "B",
+      "score": 68,
+      "synergy": "실행력(ESTP) + 전략(ENTJ) = 빠르고 정확한 성과",
+      "conflict": "ESTP의 즉흥성이 ENTJ의 계획을 흔들 수 있음",
+      "specialTip": "큰 방향은 ENTJ가 잡고, 현장 대응은 ESTP에게 맡기세요"
+    },
+    "ISFJ-ESTJ": {
+      "grade": "A",
+      "score": 79,
+      "synergy": "ISFJ의 섬세함 + ESTJ의 추진력 = 빈틈없는 팀워크",
+      "conflict": "ESTJ가 ISFJ의 속도를 답답해할 수 있음",
+      "specialTip": "ESTJ는 기다려주고, ISFJ는 진행 상황을 자주 공유하세요"
+    },
+    "INTP-INTP": {
+      "grade": "B",
+      "score": 70,
+      "synergy": "지적 호기심 대폭발, 깊이 있는 분석 가능",
+      "conflict": "둘 다 실행보다 분석에 빠져서 결과물이 안 나올 수 있음",
+      "specialTip": "분석은 70%에서 끊고, 나머지는 실행하면서 보완하세요"
+    },
+    "ESFP-ISTJ": {
+      "grade": "C",
+      "score": 36,
+      "synergy": "ESFP의 활력이 ISTJ의 딱딱함을 부드럽게 해줌",
+      "conflict": "일하는 리듬이 완전히 반대라 서로 스트레스",
+      "specialTip": "업무는 ISTJ 방식으로, 팀빌딩은 ESFP 방식으로 나누세요"
+    },
+    "ENFJ-ISTP": {
+      "grade": "C",
+      "score": 37,
+      "synergy": "ENFJ의 리더십이 ISTP의 기술력을 빛나게 함",
+      "conflict": "ENFJ의 관심이 ISTP에게는 간섭으로 느껴질 수 있음",
+      "specialTip": "ENFJ는 결과만 보고, ISTP는 과정을 가끔 공유해주세요"
+    },
+    "INFJ-ISTJ": {
+      "grade": "B",
+      "score": 58,
+      "synergy": "둘 다 성실하고 책임감 강해 안정적인 조합",
+      "conflict": "INFJ의 직관 vs ISTJ의 경험주의 — 접근법 충돌",
+      "specialTip": "새로운 시도는 INFJ 의견을, 검증은 ISTJ 방식으로"
+    },
+    "ENTP-ESTJ": {
+      "grade": "C",
+      "score": 38,
+      "synergy": "ENTP의 혁신 + ESTJ의 실행 = 가능성은 무궁무진",
+      "conflict": "\"왜 굳이 바꿔?\" vs \"왜 안 바꿔?\" 매일 논쟁",
+      "specialTip": "변화의 이유를 데이터로 보여주면 ESTJ도 수긍합니다"
+    },
+    "ESFJ-ESFJ": {
+      "grade": "A",
+      "score": 78,
+      "synergy": "화합 × 화합 = 세상에서 가장 따뜻한 팀",
+      "conflict": "둘 다 남 신경 쓰다가 정작 본인 업무가 밀림",
+      "specialTip": "서로 챙기는 만큼 자기 업무 시간도 확보하세요"
+    },
+    "ENTJ-INTP": {
+      "grade": "A",
+      "score": 84,
+      "synergy": "INTP의 분석 + ENTJ의 결단 = 최적화된 의사결정",
+      "conflict": "ENTJ의 속도에 INTP가 못 따라가거나, INTP의 분석에 ENTJ가 지칠 수 있음",
+      "specialTip": "ENTJ는 생각할 시간을 주고, INTP는 결론을 먼저 말하세요"
+    },
+    "ISFP-ISFP": {
+      "grade": "A",
+      "score": 75,
+      "synergy": "서로의 감성을 존중하는 평화로운 조합",
+      "conflict": "의견 충돌 시 둘 다 표현을 안 해서 해결이 안 됨",
+      "specialTip": "불편한 건 메신저로라도 꼭 표현하세요"
+    },
+    "ESTP-ENFP": {
+      "grade": "B",
+      "score": 65,
+      "synergy": "행동력(ESTP) + 아이디어(ENFP) = 뭐든 일단 시작",
+      "conflict": "깊이 없이 넓게만 퍼질 수 있음",
+      "specialTip": "하나를 제대로 끝내고 다음으로 넘어가세요"
+    },
+    "INFJ-ENTJ": {
+      "grade": "B",
+      "score": 62,
+      "synergy": "INFJ의 통찰 + ENTJ의 추진력 = 전략적이면서 인간적인 팀",
+      "conflict": "ENTJ의 직설에 INFJ가 상처받을 수 있음",
+      "specialTip": "ENTJ는 톤을 조절하고, INFJ는 의도를 읽으세요"
+    },
+    "ESFP-INFJ": {
+      "grade": "B",
+      "score": 50,
+      "synergy": "ESFP의 활력이 INFJ를 밝게, INFJ의 깊이가 ESFP를 성장시킴",
+      "conflict": "에너지 레벨 차이가 커서 서로 지칠 수 있음",
+      "specialTip": "함께할 때와 각자 충전할 때를 명확히 나누세요"
+    },
+    "ISTJ-INTJ": {
+      "grade": "A",
+      "score": 79,
+      "synergy": "둘 다 독립적이고 체계적 — 간섭 없이 성과를 냄",
+      "conflict": "INTJ의 혁신 vs ISTJ의 전통 — 방향성 충돌 가능",
+      "specialTip": "검증된 방법(ISTJ)과 새로운 방법(INTJ)을 번갈아 시도하세요"
+    },
+    "ENFP-ESFJ": {
+      "grade": "B",
+      "score": 62,
+      "synergy": "사람 좋아하는 둘이 만나면 팀 분위기는 보장",
+      "conflict": "ENFP의 산만함에 ESFJ가 혼란, ESFJ의 규칙에 ENFP가 답답",
+      "specialTip": "관계는 함께 챙기고, 업무 스타일은 서로 존중하세요"
     }
   },
   "teamTypes": [
