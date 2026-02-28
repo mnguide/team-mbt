@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate, useNavigate, useNavigationType, useLocation } from 'react-router-dom';
 import Home from './pages/Home';
 import MyCard from './pages/MyCard';
 import Chemistry from './pages/Chemistry';
@@ -17,6 +17,9 @@ import { usePurchase } from './hooks/usePurchase';
 export default function App() {
   const store = useTeamStore();
   const { checkPendingOrders } = usePurchase();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const navType = useNavigationType();
 
   // Recover pending IAP orders on startup
   useEffect(() => {
@@ -24,6 +27,13 @@ export default function App() {
       store.addAiCredits(count);
     });
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // 뒤로가기(POP) 시 무조건 홈으로 이동
+  useEffect(() => {
+    if (navType === 'POP' && location.pathname !== '/home' && location.pathname !== '/') {
+      navigate('/home', { replace: true });
+    }
+  }, [location.pathname, navType, navigate]);
 
   if (!store.isLoaded) {
     return (
