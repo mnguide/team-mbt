@@ -12,7 +12,7 @@ interface RelationshipGraphProps {
 
 export default function RelationshipGraph({ members, pairs, onMemberClick }: RelationshipGraphProps) {
   const [selectedId, setSelectedId] = useState<string | null>(null);
-  const [showAll, setShowAll] = useState(false);
+  const [showAll, setShowAll] = useState(true);
 
   const size = 360;
   const cx = size / 2;

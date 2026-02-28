@@ -172,7 +172,7 @@ export function calculateChemistry(
     gradeLabel: labels[grade],
     synergy,
     conflict,
-    tip: specialTip || roleTip,
+    tip: roleTip,
     specialTip,
     roleTip,
   };

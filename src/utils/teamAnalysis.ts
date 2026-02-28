@@ -179,9 +179,9 @@ export function computeTeamInsight(
 
 export function getGradeColor(grade: Grade): string {
   switch (grade) {
-    case 'S': return '#F59E0B';
-    case 'A': return '#10B981';
-    case 'B': return '#3B82F6';
+    case 'S': return '#10B981';
+    case 'A': return '#3B82F6';
+    case 'B': return '#F59E0B';
     case 'C': return '#9CA3AF';
     case 'F': return '#EF4444';
   }
@@ -189,9 +189,9 @@ export function getGradeColor(grade: Grade): string {
 
 export function getGradeBgClass(grade: Grade): string {
   switch (grade) {
-    case 'S': return 'bg-amber-100 text-amber-800';
-    case 'A': return 'bg-emerald-100 text-emerald-800';
-    case 'B': return 'bg-blue-100 text-blue-800';
+    case 'S': return 'bg-emerald-100 text-emerald-800';
+    case 'A': return 'bg-blue-100 text-blue-800';
+    case 'B': return 'bg-amber-100 text-amber-800';
     case 'C': return 'bg-gray-100 text-gray-600';
     case 'F': return 'bg-red-100 text-red-700';
   }
