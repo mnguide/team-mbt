@@ -12,7 +12,7 @@ interface RelationshipGraphProps {
 
 export default function RelationshipGraph({ members, pairs, onMemberClick }: RelationshipGraphProps) {
   const [selectedId, setSelectedId] = useState<string | null>(null);
-  const [showAll, setShowAll] = useState(true);
+  const [filter, setFilter] = useState<'all' | 'sa' | 'cf'>('all');
 
   const size = 360;
   const cx = size / 2;
@@ -34,8 +34,9 @@ export default function RelationshipGraph({ members, pairs, onMemberClick }: Rel
   };
 
   const visiblePairs = pairs.filter(p => {
-    if (showAll) return true;
-    return p.chemistry.grade === 'S' || p.chemistry.grade === 'A';
+    if (filter === 'all') return true;
+    if (filter === 'sa') return p.chemistry.grade === 'S' || p.chemistry.grade === 'A';
+    return p.chemistry.grade === 'C' || p.chemistry.grade === 'F';
   });
 
   return (
@@ -52,12 +53,21 @@ export default function RelationshipGraph({ members, pairs, onMemberClick }: Rel
             </span>
           ))}
         </div>
-        <button
-          onClick={() => setShowAll(!showAll)}
-          className="text-[10px] text-blue-500 font-medium"
-        >
-          {showAll ? 'S/A만' : '전체 표시'}
-        </button>
+        <div className="flex gap-1.5">
+          {([['all', '전체'], ['sa', '좋은 관계'], ['cf', '위험한 관계']] as const).map(([key, label]) => (
+            <button
+              key={key}
+              onClick={() => setFilter(key)}
+              className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${
+                filter === key
+                  ? 'bg-blue-500 text-white'
+                  : 'text-blue-500 bg-blue-50'
+              }`}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
       </div>
 
       <svg viewBox={`0 0 ${size} ${size}`} className="w-full">
