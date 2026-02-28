@@ -8,7 +8,7 @@ export default function Home() {
       <div className="flex-1 flex flex-col items-center justify-center px-6 py-12">
         <div className="text-6xl mb-4">💼</div>
         <h1 className="text-2xl font-black text-gray-900 mb-2 text-center">
-          우리 팀 케미 보고서
+          팀MBTI
         </h1>
         <p className="text-gray-500 text-center text-sm mb-8 leading-relaxed">
           K-직장인 MBTI로 알아보는<br />
@@ -47,7 +47,7 @@ export default function Home() {
       </div>
 
       <footer className="py-4 text-center">
-        <p className="text-[10px] text-gray-300">Team MBTI v1.0</p>
+        <p className="text-[10px] text-gray-300">팀MBTI v1.0</p>
       </footer>
     </div>
   );

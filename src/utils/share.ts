@@ -29,7 +29,7 @@ export function generateShareText(
     case 'chemistry':
       return `💼 직장 궁합 결과: ${data.grade}등급!\n${data.myType} × ${data.theirType}\n"${data.synergy}"\n\n너도 해봐 👉`;
     case 'team':
-      return `📊 우리 팀 케미 보고서\n${data.emoji} ${data.teamType}\n"${data.description}"\n\n우리 팀도 분석해보기 👉`;
+      return `📊 팀MBTI - 우리 팀 케미 보고서\n${data.emoji} ${data.teamType}\n"${data.description}"\n\n우리 팀도 분석해보기 👉`;
     default:
       return '';
   }

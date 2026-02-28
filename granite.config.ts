@@ -3,7 +3,7 @@ import { defineConfig } from '@apps-in-toss/web-framework/config';
 export default defineConfig({
   appName: 'teammbti',
   brand: {
-    displayName: '우리 팀 케미 보고서',
+    displayName: '팀MBTI',
     primaryColor: '#3182F6',
     icon: '',
   },

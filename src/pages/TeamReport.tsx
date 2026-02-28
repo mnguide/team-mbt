@@ -91,7 +91,7 @@ export default function TeamReport({ myType, members, onRemoveMember }: TeamRepo
       teamType: teamType.name,
       description: teamType.description,
     });
-    const result = await shareResult('우리 팀 케미 보고서', text);
+    const result = await shareResult('팀MBTI - 우리 팀 케미 보고서', text);
     if (result.method === 'copy') {
       setShareToast('클립보드에 복사됨!');
       setTimeout(() => setShareToast(''), 2000);
@@ -102,7 +102,7 @@ export default function TeamReport({ myType, members, onRemoveMember }: TeamRepo
     <div className="min-h-screen bg-gradient-to-b from-emerald-50 to-white px-6 py-8">
       <button onClick={() => navigate(-1)} className="text-gray-400 mb-6">&larr; 뒤로</button>
 
-      <h1 className="text-xl font-black text-gray-900 mb-1">📊 우리 팀 케미 보고서</h1>
+      <h1 className="text-xl font-black text-gray-900 mb-1">📊 팀 케미 보고서</h1>
       <p className="text-sm text-gray-500 mb-6">팀원 {members.length}명 분석 완료</p>
 
       <ResultCard className="mb-4">

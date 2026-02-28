@@ -1,5 +1,5 @@
 /**
- * Cloudflare Worker — LLM Proxy for Team MBTI AI Analysis
+ * Cloudflare Worker — LLM Proxy for 팀MBTI AI Analysis
  *
  * Deploy: npx wrangler deploy
  * Set secrets: npx wrangler secret put ANTHROPIC_API_KEY
