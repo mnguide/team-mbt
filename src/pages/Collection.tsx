@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AddMemberModal from '../components/AddMemberModal';
 import { getTypeInfo } from '../utils/mbti';
-import { buildAllMembers, ME_ID } from '../utils/teamAnalysis';
+import { buildAllMembers, ME_ID, computeAllPairs, computeMemberInsight, getGradeBgClass } from '../utils/teamAnalysis';
 import type { MbtiType, Role } from '../utils/mbti';
 import type { TeamMember } from '../hooks/useTeamStore';
 
@@ -29,6 +29,7 @@ export default function Collection({ myType, members, onAddMember, onRemoveMembe
   const [deleteTarget, setDeleteTarget] = useState<string | null>(null);
 
   const allMembers = buildAllMembers(myType, members);
+  const allPairs = allMembers.length >= 2 ? computeAllPairs(allMembers) : [];
   const progress = Math.round((members.length / MAX_MEMBERS) * 100);
 
   return (
@@ -92,6 +93,8 @@ export default function Collection({ myType, members, onAddMember, onRemoveMembe
         {allMembers.map(member => {
           const isMe = member.id === ME_ID;
           const info = getTypeInfo(member.mbtiType);
+          const insight = allPairs.length > 0 ? computeMemberInsight(member, allPairs) : null;
+          const avgGrade = insight ? scoreToGrade(insight.avgScore) : null;
           return (
             <div key={member.id} className="relative">
               <button
@@ -109,6 +112,11 @@ export default function Collection({ myType, members, onAddMember, onRemoveMembe
                 <p className="text-[10px] text-gray-400">{member.mbtiType}</p>
                 {!isMe && (
                   <span className="text-[10px] text-gray-400">{ROLE_LABELS[member.role]}</span>
+                )}
+                {insight && avgGrade && !editMode && (
+                  <p className={`mt-1 text-[9px] font-bold rounded-full px-1.5 py-0.5 inline-block ${getGradeBgClass(avgGrade)}`}>
+                    팀 궁합 {insight.avgScore}
+                  </p>
                 )}
               </button>
               {editMode && !isMe && (
@@ -179,3 +187,10 @@ export default function Collection({ myType, members, onAddMember, onRemoveMembe
   );
 }
 
+function scoreToGrade(score: number): 'S' | 'A' | 'B' | 'C' | 'F' {
+  if (score >= 90) return 'S';
+  if (score >= 75) return 'A';
+  if (score >= 55) return 'B';
+  if (score >= 35) return 'C';
+  return 'F';
+}
