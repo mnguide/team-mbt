@@ -21,7 +21,7 @@ export default function TeamInsights({ members }: TeamInsightsProps) {
             팀 인사이트를 보려면 최소 2명의 멤버가 필요합니다.
           </p>
           <button
-            onClick={() => navigate('/collection')}
+            onClick={() => navigate('/collection', { replace: true })}
             className="text-blue-500 font-medium text-sm"
           >
             도감에서 멤버 추가하기
@@ -40,7 +40,7 @@ export default function TeamInsights({ members }: TeamInsightsProps) {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-amber-50 to-white px-6 py-8">
-      <button onClick={() => navigate('/collection')} className="text-gray-400 mb-4">
+      <button onClick={() => navigate('/collection', { replace: true })} className="text-gray-400 mb-4">
         &larr; 도감
       </button>
 
@@ -91,7 +91,7 @@ export default function TeamInsights({ members }: TeamInsightsProps) {
       <div className="grid grid-cols-2 gap-3 mb-4">
         {insight.keyConnector && keyConnectorInfo && (
           <button
-            onClick={() => navigate(`/member/${insight.keyConnector!.id}`)}
+            onClick={() => navigate(`/member/${insight.keyConnector!.id}`, { replace: true })}
             className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 text-center active:scale-[0.97] transition-transform"
           >
             <p className="text-[10px] text-gray-400 mb-1">핵심 연결자</p>
@@ -104,7 +104,7 @@ export default function TeamInsights({ members }: TeamInsightsProps) {
         )}
         {insight.isolationRisk && isolationInfo && (
           <button
-            onClick={() => navigate(`/member/${insight.isolationRisk!.id}`)}
+            onClick={() => navigate(`/member/${insight.isolationRisk!.id}`, { replace: true })}
             className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 text-center active:scale-[0.97] transition-transform"
           >
             <p className="text-[10px] text-gray-400 mb-1">고립 위험</p>
@@ -127,7 +127,7 @@ export default function TeamInsights({ members }: TeamInsightsProps) {
               return (
                 <button
                   key={m.id}
-                  onClick={() => navigate(`/member/${m.id}`)}
+                  onClick={() => navigate(`/member/${m.id}`, { replace: true })}
                   className="text-center active:scale-95 transition-transform"
                 >
                   <span className="text-2xl">{info.emoji}</span>
@@ -162,7 +162,7 @@ export default function TeamInsights({ members }: TeamInsightsProps) {
       </div>
 
       <button
-        onClick={() => navigate('/relationship-map')}
+        onClick={() => navigate('/relationship-map', { replace: true })}
         className="w-full py-3.5 bg-white text-gray-700 rounded-2xl font-bold text-sm border border-gray-200 active:scale-[0.98] transition-transform"
       >
         🕸️ 관계도 보기

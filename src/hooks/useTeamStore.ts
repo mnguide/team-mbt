@@ -89,6 +89,15 @@ export function useTeamStore() {
     }));
   }, []);
 
+  const updateMember = useCallback((id: string, updates: Partial<Pick<TeamMember, 'nickname' | 'mbtiType' | 'role'>>) => {
+    setStore(prev => ({
+      ...prev,
+      members: prev.members.map(m =>
+        m.id === id ? { ...m, ...updates } : m
+      ),
+    }));
+  }, []);
+
   const incrementAnalysis = useCallback(() => {
     setStore(prev => ({ ...prev, analysisCount: prev.analysisCount + 1 }));
   }, []);
@@ -117,6 +126,7 @@ export function useTeamStore() {
     addMember,
     removeMember,
     updateMemberNickname,
+    updateMember,
     incrementAnalysis,
     addAiCredits,
     useAiCredit,

@@ -94,7 +94,8 @@ export default function App() {
         element={
           <MemberDetail
             members={store.members}
-            onUpdateNickname={store.updateMemberNickname}
+            onUpdateMember={store.updateMember}
+            onRemoveMember={store.removeMember}
           />
         }
       />

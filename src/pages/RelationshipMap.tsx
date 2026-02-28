@@ -26,7 +26,7 @@ export default function RelationshipMap({ members }: RelationshipMapProps) {
             관계도를 보려면 최소 2명의 멤버가 필요합니다.
           </p>
           <button
-            onClick={() => navigate('/collection')}
+            onClick={() => navigate('/collection', { replace: true })}
             className="text-blue-500 font-medium text-sm"
           >
             도감에서 멤버 추가하기
@@ -38,7 +38,7 @@ export default function RelationshipMap({ members }: RelationshipMapProps) {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-emerald-50 to-white px-6 py-8">
-      <button onClick={() => navigate('/collection')} className="text-gray-400 mb-4">
+      <button onClick={() => navigate('/collection', { replace: true })} className="text-gray-400 mb-4">
         &larr; 도감
       </button>
 
@@ -72,13 +72,13 @@ export default function RelationshipMap({ members }: RelationshipMapProps) {
           <RelationshipGraph
             members={members}
             pairs={allPairs}
-            onMemberClick={id => navigate(`/member/${id}`)}
+            onMemberClick={id => navigate(`/member/${id}`, { replace: true })}
           />
         ) : (
           <ChemistryMatrix
             members={members}
             pairs={allPairs}
-            onCellClick={(aId) => navigate(`/member/${aId}`)}
+            onCellClick={(aId) => navigate(`/member/${aId}`, { replace: true })}
           />
         )}
       </div>

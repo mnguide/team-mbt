@@ -25,6 +25,7 @@ const ROLE_LABELS: Record<string, string> = {
 export default function Collection({ members, onAddMember, onRemoveMember }: CollectionProps) {
   const navigate = useNavigate();
   const [modalOpen, setModalOpen] = useState(false);
+  const [editMode, setEditMode] = useState(false);
   const [deleteTarget, setDeleteTarget] = useState<string | null>(null);
 
   const allPairs = computeAllPairs(members);
@@ -32,13 +33,25 @@ export default function Collection({ members, onAddMember, onRemoveMember }: Col
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-indigo-50 to-white px-6 py-8">
-      <button onClick={() => navigate('/home')} className="text-gray-400 mb-4">
+      <button onClick={() => navigate('/home', { replace: true })} className="text-gray-400 mb-4">
         &larr; 홈
       </button>
 
       <div className="flex items-center justify-between mb-2">
         <h1 className="text-xl font-black text-gray-900">팀 도감</h1>
-        <span className="text-sm text-gray-500">{members.length}/{MAX_MEMBERS}</span>
+        <div className="flex items-center gap-3">
+          {members.length > 0 && (
+            <button
+              onClick={() => setEditMode(!editMode)}
+              className={`text-sm font-medium px-3 py-1 rounded-lg ${
+                editMode ? 'bg-blue-500 text-white' : 'text-blue-500 bg-blue-50'
+              }`}
+            >
+              {editMode ? '완료' : '편집'}
+            </button>
+          )}
+          <span className="text-sm text-gray-500">{members.length}/{MAX_MEMBERS}</span>
+        </div>
       </div>
 
       <div className="w-full bg-gray-200 rounded-full h-2 mb-6">
@@ -72,27 +85,32 @@ export default function Collection({ members, onAddMember, onRemoveMember }: Col
           const avgGrade = scoreToGrade(insight.avgScore);
 
           return (
-            <button
-              key={member.id}
-              onClick={() => navigate(`/member/${member.id}`)}
-              onContextMenu={e => {
-                e.preventDefault();
-                setDeleteTarget(member.id);
-              }}
-              className="relative bg-white rounded-2xl p-3 text-center shadow-sm border border-gray-100 active:scale-[0.97] transition-transform"
-            >
-              <span className="text-3xl">{info.emoji}</span>
-              <p className="text-xs font-bold text-gray-800 mt-1 truncate">
-                {member.nickname}
-              </p>
-              <p className="text-[10px] text-gray-400">{member.mbtiType}</p>
-              <span className="text-[10px] text-gray-400">{ROLE_LABELS[member.role]}</span>
-              {members.length > 1 && (
-                <span className={`absolute top-1.5 right-1.5 text-[9px] font-bold px-1.5 py-0.5 rounded-full ${getGradeBgClass(avgGrade)}`}>
-                  {avgGrade}
-                </span>
+            <div key={member.id} className="relative">
+              <button
+                onClick={() => navigate(`/member/${member.id}`)}
+                className="w-full bg-white rounded-2xl p-3 text-center shadow-sm border border-gray-100 active:scale-[0.97] transition-transform"
+              >
+                <span className="text-3xl">{info.emoji}</span>
+                <p className="text-xs font-bold text-gray-800 mt-1 truncate">
+                  {member.nickname}
+                </p>
+                <p className="text-[10px] text-gray-400">{member.mbtiType}</p>
+                <span className="text-[10px] text-gray-400">{ROLE_LABELS[member.role]}</span>
+                {members.length > 1 && !editMode && (
+                  <span className={`absolute top-1.5 right-1.5 text-[9px] font-bold px-1.5 py-0.5 rounded-full ${getGradeBgClass(avgGrade)}`}>
+                    {avgGrade}
+                  </span>
+                )}
+              </button>
+              {editMode && (
+                <button
+                  onClick={() => setDeleteTarget(member.id)}
+                  className="absolute -top-1.5 -right-1.5 w-6 h-6 bg-red-500 text-white rounded-full text-xs font-bold flex items-center justify-center shadow-sm"
+                >
+                  &times;
+                </button>
               )}
-            </button>
+            </div>
           );
         })}
 
@@ -118,7 +136,10 @@ export default function Collection({ members, onAddMember, onRemoveMember }: Col
         <div className="fixed inset-0 z-50 flex items-center justify-center">
           <div className="absolute inset-0 bg-black/40" onClick={() => setDeleteTarget(null)} />
           <div className="relative bg-white rounded-2xl p-6 mx-6 max-w-sm w-full">
-            <p className="text-gray-900 font-bold mb-4">이 멤버를 삭제할까요?</p>
+            <p className="text-gray-900 font-bold mb-2">멤버 삭제</p>
+            <p className="text-sm text-gray-500 mb-4">
+              <strong>{members.find(m => m.id === deleteTarget)?.nickname}</strong>님을 삭제할까요?
+            </p>
             <div className="flex gap-3">
               <button
                 onClick={() => setDeleteTarget(null)}

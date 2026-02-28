@@ -1,12 +1,15 @@
 import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import MbtiSelector from '../components/MbtiSelector';
 import { getTypeInfo } from '../utils/mbti';
 import { computeAllPairs, computeMemberInsight, getGradeColor, getGradeBgClass } from '../utils/teamAnalysis';
+import type { MbtiType, Role } from '../utils/mbti';
 import type { TeamMember } from '../hooks/useTeamStore';
 
 interface MemberDetailProps {
   members: TeamMember[];
-  onUpdateNickname: (id: string, nickname: string) => void;
+  onUpdateMember: (id: string, updates: Partial<Pick<TeamMember, 'nickname' | 'mbtiType' | 'role'>>) => void;
+  onRemoveMember: (id: string) => void;
 }
 
 const ROLE_LABELS: Record<string, string> = {
@@ -16,11 +19,18 @@ const ROLE_LABELS: Record<string, string> = {
   junior: '🌱 후배',
 };
 
-export default function MemberDetail({ members, onUpdateNickname }: MemberDetailProps) {
+const ROLES: { value: Role; label: string; emoji: string }[] = [
+  { value: 'boss', label: '상사', emoji: '👔' },
+  { value: 'senior', label: '선배', emoji: '🧑‍💼' },
+  { value: 'peer', label: '동료', emoji: '🤝' },
+  { value: 'junior', label: '후배', emoji: '🌱' },
+];
+
+export default function MemberDetail({ members, onUpdateMember, onRemoveMember }: MemberDetailProps) {
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
-  const [editing, setEditing] = useState(false);
-  const [editName, setEditName] = useState('');
+  const [editMode, setEditMode] = useState(false);
+  const [deleteConfirm, setDeleteConfirm] = useState(false);
 
   const member = members.find(m => m.id === id);
   if (!member) {
@@ -28,7 +38,7 @@ export default function MemberDetail({ members, onUpdateNickname }: MemberDetail
       <div className="min-h-screen flex items-center justify-center bg-white">
         <div className="text-center">
           <p className="text-gray-400 mb-4">멤버를 찾을 수 없습니다.</p>
-          <button onClick={() => navigate('/collection')} className="text-blue-500 font-medium">
+          <button onClick={() => navigate('/collection', { replace: true })} className="text-blue-500 font-medium">
             도감으로 돌아가기
           </button>
         </div>
@@ -40,7 +50,6 @@ export default function MemberDetail({ members, onUpdateNickname }: MemberDetail
   const allPairs = computeAllPairs(members);
   const insight = computeMemberInsight(member, allPairs);
 
-  // Get all relationships sorted by score
   const relationships = allPairs
     .filter(p => p.memberA.id === member.id || p.memberB.id === member.id)
     .map(p => ({
@@ -49,50 +58,49 @@ export default function MemberDetail({ members, onUpdateNickname }: MemberDetail
     }))
     .sort((a, b) => b.chemistry.score - a.chemistry.score);
 
-  // Star layout mini graph: center member + connections
   const starSize = 200;
   const cx = starSize / 2;
   const cy = starSize / 2;
   const outerR = 70;
 
+  if (editMode) {
+    return (
+      <EditMemberView
+        member={member}
+        onSave={(updates) => {
+          onUpdateMember(member.id, updates);
+          setEditMode(false);
+        }}
+        onCancel={() => setEditMode(false)}
+      />
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-purple-50 to-white px-6 py-8">
-      <button onClick={() => navigate('/collection')} className="text-gray-400 mb-6">
-        &larr; 도감
-      </button>
+      <div className="flex items-center justify-between mb-6">
+        <button onClick={() => navigate('/collection', { replace: true })} className="text-gray-400">
+          &larr; 도감
+        </button>
+        <div className="flex gap-2">
+          <button
+            onClick={() => setEditMode(true)}
+            className="text-sm text-blue-500 font-medium px-3 py-1.5 bg-blue-50 rounded-lg"
+          >
+            수정
+          </button>
+          <button
+            onClick={() => setDeleteConfirm(true)}
+            className="text-sm text-red-500 font-medium px-3 py-1.5 bg-red-50 rounded-lg"
+          >
+            삭제
+          </button>
+        </div>
+      </div>
 
       <div className="text-center mb-6">
         <span className="text-5xl">{info.emoji}</span>
-        {editing ? (
-          <div className="flex items-center justify-center gap-2 mt-2">
-            <input
-              type="text"
-              value={editName}
-              onChange={e => setEditName(e.target.value)}
-              maxLength={10}
-              className="px-3 py-1.5 bg-gray-50 rounded-lg border border-gray-200 text-center text-gray-900 font-bold focus:outline-none focus:ring-2 focus:ring-blue-300 w-32"
-              autoFocus
-            />
-            <button
-              onClick={() => {
-                if (editName.trim()) {
-                  onUpdateNickname(member.id, editName.trim());
-                }
-                setEditing(false);
-              }}
-              className="text-blue-500 text-sm font-medium"
-            >
-              완료
-            </button>
-          </div>
-        ) : (
-          <h1
-            className="text-xl font-black text-gray-900 mt-2 cursor-pointer"
-            onClick={() => { setEditName(member.nickname); setEditing(true); }}
-          >
-            {member.nickname} <span className="text-gray-300 text-sm">&#9998;</span>
-          </h1>
-        )}
+        <h1 className="text-xl font-black text-gray-900 mt-2">{member.nickname}</h1>
         <p className="text-sm text-gray-500">{member.mbtiType} · {info.title}</p>
         <p className="text-xs text-gray-400 mt-1">{ROLE_LABELS[member.role]}</p>
       </div>
@@ -120,7 +128,6 @@ export default function MemberDetail({ members, onUpdateNickname }: MemberDetail
 
       {relationships.length > 0 && (
         <>
-          {/* Star mini graph */}
           <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 mb-4">
             <h3 className="text-sm font-bold text-gray-700 mb-3">관계 미니맵</h3>
             <svg viewBox={`0 0 ${starSize} ${starSize}`} className="w-full max-w-[250px] mx-auto">
@@ -147,7 +154,6 @@ export default function MemberDetail({ members, onUpdateNickname }: MemberDetail
                   </g>
                 );
               })}
-              {/* Center node */}
               <circle cx={cx} cy={cy} r={20} fill="#3B82F6" />
               <text x={cx} y={cy - 3} textAnchor="middle" fontSize="14">
                 {info.emoji}
@@ -158,7 +164,6 @@ export default function MemberDetail({ members, onUpdateNickname }: MemberDetail
             </svg>
           </div>
 
-          {/* Relationship list */}
           <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 mb-4">
             <h3 className="text-sm font-bold text-gray-700 mb-3">전체 관계</h3>
             <div className="space-y-2">
@@ -167,7 +172,7 @@ export default function MemberDetail({ members, onUpdateNickname }: MemberDetail
                 return (
                   <button
                     key={rel.partner.id}
-                    onClick={() => navigate(`/member/${rel.partner.id}`)}
+                    onClick={() => navigate(`/member/${rel.partner.id}`, { replace: true })}
                     className="w-full flex items-center gap-3 p-3 bg-gray-50 rounded-xl active:bg-gray-100 transition-colors"
                   >
                     <span className="text-xl">{partnerInfo.emoji}</span>
@@ -193,6 +198,125 @@ export default function MemberDetail({ members, onUpdateNickname }: MemberDetail
           <p className="text-gray-400 text-sm">다른 멤버를 추가하면 관계가 표시됩니다.</p>
         </div>
       )}
+
+      {/* Delete confirmation modal */}
+      {deleteConfirm && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center">
+          <div className="absolute inset-0 bg-black/40" onClick={() => setDeleteConfirm(false)} />
+          <div className="relative bg-white rounded-2xl p-6 mx-6 max-w-sm w-full">
+            <p className="text-gray-900 font-bold mb-2">멤버 삭제</p>
+            <p className="text-sm text-gray-500 mb-4">
+              <strong>{member.nickname}</strong>님을 도감에서 삭제할까요?
+            </p>
+            <div className="flex gap-3">
+              <button
+                onClick={() => setDeleteConfirm(false)}
+                className="flex-1 py-3 bg-gray-100 text-gray-600 rounded-xl font-medium"
+              >
+                취소
+              </button>
+              <button
+                onClick={() => {
+                  onRemoveMember(member.id);
+                  navigate('/collection', { replace: true });
+                }}
+                className="flex-1 py-3 bg-red-500 text-white rounded-xl font-medium"
+              >
+                삭제
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* ---- Edit sub-view ---- */
+
+function EditMemberView({
+  member,
+  onSave,
+  onCancel,
+}: {
+  member: TeamMember;
+  onSave: (updates: Partial<Pick<TeamMember, 'nickname' | 'mbtiType' | 'role'>>) => void;
+  onCancel: () => void;
+}) {
+  const [nickname, setNickname] = useState(member.nickname);
+  const [mbtiType, setMbtiType] = useState<MbtiType>(member.mbtiType);
+  const [role, setRole] = useState<Role>(member.role);
+
+  const hasChanges =
+    nickname.trim() !== member.nickname ||
+    mbtiType !== member.mbtiType ||
+    role !== member.role;
+
+  const handleSave = () => {
+    const updates: Partial<Pick<TeamMember, 'nickname' | 'mbtiType' | 'role'>> = {};
+    if (nickname.trim() !== member.nickname) updates.nickname = nickname.trim();
+    if (mbtiType !== member.mbtiType) updates.mbtiType = mbtiType;
+    if (role !== member.role) updates.role = role;
+    onSave(updates);
+  };
+
+  return (
+    <div className="min-h-screen bg-gradient-to-b from-purple-50 to-white px-6 py-8">
+      <button onClick={onCancel} className="text-gray-400 mb-6">
+        &larr; 취소
+      </button>
+
+      <h1 className="text-xl font-black text-gray-900 mb-6">멤버 수정</h1>
+
+      <div className="space-y-5">
+        <div>
+          <label className="text-sm font-medium text-gray-600 mb-1.5 block">닉네임</label>
+          <input
+            type="text"
+            value={nickname}
+            onChange={e => setNickname(e.target.value)}
+            maxLength={10}
+            className="w-full px-4 py-3 bg-white rounded-xl border border-gray-200 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-300"
+          />
+        </div>
+
+        <div>
+          <label className="text-sm font-medium text-gray-600 mb-1.5 block">관계</label>
+          <div className="flex gap-2">
+            {ROLES.map(r => (
+              <button
+                key={r.value}
+                onClick={() => setRole(r.value)}
+                className={`flex-1 py-2.5 rounded-xl text-sm font-medium transition-all ${
+                  role === r.value
+                    ? 'bg-blue-500 text-white shadow-md'
+                    : 'bg-gray-50 text-gray-600'
+                }`}
+              >
+                {r.emoji} {r.label}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <MbtiSelector
+          value={mbtiType}
+          onChange={setMbtiType}
+          label="MBTI 유형"
+        />
+      </div>
+
+      <button
+        onClick={handleSave}
+        disabled={!nickname.trim() || !hasChanges}
+        className={`w-full mt-6 py-4 rounded-2xl font-bold text-lg transition-all ${
+          nickname.trim() && hasChanges
+            ? 'bg-blue-500 text-white shadow-lg shadow-blue-200 active:scale-[0.98]'
+            : 'bg-gray-200 text-gray-400'
+        }`}
+      >
+        저장하기
+      </button>
     </div>
   );
 }
