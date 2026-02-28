@@ -80,6 +80,15 @@ export function useTeamStore() {
     }));
   }, []);
 
+  const updateMemberNickname = useCallback((id: string, nickname: string) => {
+    setStore(prev => ({
+      ...prev,
+      members: prev.members.map(m =>
+        m.id === id ? { ...m, nickname } : m
+      ),
+    }));
+  }, []);
+
   const incrementAnalysis = useCallback(() => {
     setStore(prev => ({ ...prev, analysisCount: prev.analysisCount + 1 }));
   }, []);
@@ -107,6 +116,7 @@ export function useTeamStore() {
     setMyRole,
     addMember,
     removeMember,
+    updateMemberNickname,
     incrementAnalysis,
     addAiCredits,
     useAiCredit,

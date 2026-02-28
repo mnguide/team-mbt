@@ -29,6 +29,13 @@ export default function Home() {
           >
             동료와 궁합 분석하기
           </button>
+
+          <button
+            onClick={() => navigate('/collection')}
+            className="w-full py-4 bg-gradient-to-r from-indigo-500 to-purple-500 text-white rounded-2xl font-bold text-lg shadow-lg shadow-indigo-200 active:scale-[0.98] transition-transform"
+          >
+            📋 팀 도감 열기
+          </button>
         </div>
 
         <div className="mt-12 grid grid-cols-3 gap-4 w-full max-w-sm">
@@ -36,6 +43,7 @@ export default function Home() {
             { emoji: '🎯', label: '내 유형 카드', desc: '16가지 K-직장인' },
             { emoji: '💕', label: '궁합 분석', desc: '동료와의 케미' },
             { emoji: '📊', label: '팀 보고서', desc: '우리 팀 분석' },
+            { emoji: '📋', label: '팀 도감', desc: '팀원 수집·관계도' },
           ].map(item => (
             <div key={item.label} className="text-center p-3 rounded-xl bg-white/80">
               <span className="text-2xl">{item.emoji}</span>

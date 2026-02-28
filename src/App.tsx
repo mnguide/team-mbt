@@ -7,6 +7,10 @@ import ChemistryResult from './pages/ChemistryResult';
 import AiAnalysis from './pages/AiAnalysis';
 import TeamReport from './pages/TeamReport';
 import ObservationQuiz from './pages/ObservationQuiz';
+import Collection from './pages/Collection';
+import MemberDetail from './pages/MemberDetail';
+import RelationshipMap from './pages/RelationshipMap';
+import TeamInsights from './pages/TeamInsights';
 import { useTeamStore } from './hooks/useTeamStore';
 import { usePurchase } from './hooks/usePurchase';
 
@@ -74,6 +78,33 @@ export default function App() {
       <Route
         path="/quiz"
         element={<ObservationQuiz myType={store.myType} />}
+      />
+      <Route
+        path="/collection"
+        element={
+          <Collection
+            members={store.members}
+            onAddMember={store.addMember}
+            onRemoveMember={store.removeMember}
+          />
+        }
+      />
+      <Route
+        path="/member/:id"
+        element={
+          <MemberDetail
+            members={store.members}
+            onUpdateNickname={store.updateMemberNickname}
+          />
+        }
+      />
+      <Route
+        path="/relationship-map"
+        element={<RelationshipMap members={store.members} />}
+      />
+      <Route
+        path="/team-insights"
+        element={<TeamInsights members={store.members} />}
       />
       <Route path="*" element={<Navigate to="/home" replace />} />
     </Routes>

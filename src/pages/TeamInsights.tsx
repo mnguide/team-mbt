@@ -1,0 +1,180 @@
+import { useNavigate } from 'react-router-dom';
+import MbtiDistributionChart from '../components/MbtiDistributionChart';
+import { getTypeInfo } from '../utils/mbti';
+import { computeAllPairs, computeTeamInsight, getGradeBgClass, getGradeColor } from '../utils/teamAnalysis';
+import type { TeamMember } from '../hooks/useTeamStore';
+import type { Grade } from '../utils/mbti';
+
+interface TeamInsightsProps {
+  members: TeamMember[];
+}
+
+export default function TeamInsights({ members }: TeamInsightsProps) {
+  const navigate = useNavigate();
+
+  if (members.length < 2) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-white px-6">
+        <div className="text-center">
+          <p className="text-4xl mb-3">📊</p>
+          <p className="text-gray-400 text-sm mb-4">
+            팀 인사이트를 보려면 최소 2명의 멤버가 필요합니다.
+          </p>
+          <button
+            onClick={() => navigate('/collection')}
+            className="text-blue-500 font-medium text-sm"
+          >
+            도감에서 멤버 추가하기
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  const allPairs = computeAllPairs(members);
+  const insight = computeTeamInsight(members, allPairs);
+
+  const synergyGrade = scoreToGrade(insight.synergyScore);
+  const keyConnectorInfo = insight.keyConnector ? getTypeInfo(insight.keyConnector.mbtiType) : null;
+  const isolationInfo = insight.isolationRisk ? getTypeInfo(insight.isolationRisk.mbtiType) : null;
+
+  return (
+    <div className="min-h-screen bg-gradient-to-b from-amber-50 to-white px-6 py-8">
+      <button onClick={() => navigate('/collection')} className="text-gray-400 mb-4">
+        &larr; 도감
+      </button>
+
+      <h1 className="text-xl font-black text-gray-900 mb-6">팀 인사이트</h1>
+
+      {/* Synergy Score */}
+      <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 mb-4 text-center">
+        <p className="text-xs text-gray-400 mb-1">팀 시너지 점수</p>
+        <div className="flex items-center justify-center gap-3">
+          <span
+            className="text-4xl font-black"
+            style={{ color: getGradeColor(synergyGrade) }}
+          >
+            {insight.synergyScore}
+          </span>
+          <span className={`text-sm font-bold px-3 py-1 rounded-full ${getGradeBgClass(synergyGrade)}`}>
+            {synergyGrade}
+          </span>
+        </div>
+        <p className="text-[10px] text-gray-400 mt-2">
+          총 {insight.totalPairs}개 관계의 평균
+        </p>
+      </div>
+
+      {/* Grade Distribution */}
+      <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 mb-4">
+        <h3 className="text-sm font-bold text-gray-700 mb-3">등급 분포</h3>
+        <div className="flex gap-2">
+          {(['S', 'A', 'B', 'C', 'F'] as Grade[]).map(g => (
+            <div key={g} className="flex-1 text-center">
+              <div
+                className="mx-auto rounded-lg mb-1"
+                style={{
+                  width: '100%',
+                  height: `${Math.max(8, (insight.gradeDistribution[g] / Math.max(insight.totalPairs, 1)) * 80)}px`,
+                  backgroundColor: getGradeColor(g),
+                  opacity: 0.7,
+                }}
+              />
+              <span className="text-[10px] font-bold text-gray-600">{g}</span>
+              <p className="text-[10px] text-gray-400">{insight.gradeDistribution[g]}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Key Connector & Isolation Risk */}
+      <div className="grid grid-cols-2 gap-3 mb-4">
+        {insight.keyConnector && keyConnectorInfo && (
+          <button
+            onClick={() => navigate(`/member/${insight.keyConnector!.id}`)}
+            className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 text-center active:scale-[0.97] transition-transform"
+          >
+            <p className="text-[10px] text-gray-400 mb-1">핵심 연결자</p>
+            <span className="text-2xl">{keyConnectorInfo.emoji}</span>
+            <p className="text-xs font-bold text-gray-800 mt-1">
+              {insight.keyConnector.nickname}
+            </p>
+            <p className="text-[10px] text-emerald-600">팀 평균 궁합 최고</p>
+          </button>
+        )}
+        {insight.isolationRisk && isolationInfo && (
+          <button
+            onClick={() => navigate(`/member/${insight.isolationRisk!.id}`)}
+            className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 text-center active:scale-[0.97] transition-transform"
+          >
+            <p className="text-[10px] text-gray-400 mb-1">고립 위험</p>
+            <span className="text-2xl">{isolationInfo.emoji}</span>
+            <p className="text-xs font-bold text-gray-800 mt-1">
+              {insight.isolationRisk.nickname}
+            </p>
+            <p className="text-[10px] text-red-500">팀 평균 궁합 최저</p>
+          </button>
+        )}
+      </div>
+
+      {/* Best Triple */}
+      {insight.bestTriple && (
+        <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 mb-4">
+          <h3 className="text-sm font-bold text-gray-700 mb-3">베스트 트리오</h3>
+          <div className="flex items-center justify-center gap-3">
+            {insight.bestTriple.map(m => {
+              const info = getTypeInfo(m.mbtiType);
+              return (
+                <button
+                  key={m.id}
+                  onClick={() => navigate(`/member/${m.id}`)}
+                  className="text-center active:scale-95 transition-transform"
+                >
+                  <span className="text-2xl">{info.emoji}</span>
+                  <p className="text-[10px] font-bold text-gray-700 mt-0.5">{m.nickname}</p>
+                  <p className="text-[9px] text-gray-400">{m.mbtiType}</p>
+                </button>
+              );
+            })}
+          </div>
+          <p className="text-center text-xs text-amber-600 font-medium mt-2">
+            평균 {insight.bestTripleScore}점
+          </p>
+        </div>
+      )}
+
+      {/* MBTI Distribution */}
+      <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 mb-4">
+        <h3 className="text-sm font-bold text-gray-700 mb-3">MBTI 분포</h3>
+        <MbtiDistributionChart members={members} />
+
+        {Object.keys(insight.mbtiDistribution).length > 0 && (
+          <div className="mt-4 flex flex-wrap gap-1.5">
+            {Object.entries(insight.mbtiDistribution)
+              .sort((a, b) => b[1] - a[1])
+              .map(([type, count]) => (
+                <span key={type} className="text-[10px] bg-gray-100 text-gray-600 px-2 py-1 rounded-full">
+                  {type} ×{count}
+                </span>
+              ))}
+          </div>
+        )}
+      </div>
+
+      <button
+        onClick={() => navigate('/relationship-map')}
+        className="w-full py-3.5 bg-white text-gray-700 rounded-2xl font-bold text-sm border border-gray-200 active:scale-[0.98] transition-transform"
+      >
+        🕸️ 관계도 보기
+      </button>
+    </div>
+  );
+}
+
+function scoreToGrade(score: number): Grade {
+  if (score >= 90) return 'S';
+  if (score >= 75) return 'A';
+  if (score >= 55) return 'B';
+  if (score >= 35) return 'C';
+  return 'F';
+}

@@ -31,6 +31,8 @@ export default function ChemistryResult({
   const [showDetailed, setShowDetailed] = useState(false);
   const [adPassed, setAdPassed] = useState(analysisCount === 0);
   const [shareToast, setShareToast] = useState('');
+  const [nickname, setNickname] = useState('');
+  const [nicknameSaved, setNicknameSaved] = useState(false);
 
   const chemistry = calculateChemistry(myType, theirType, role);
   const myInfo = getTypeInfo(myType);
@@ -39,8 +41,13 @@ export default function ChemistryResult({
   const handleAdDone = useCallback(() => {
     setAdPassed(true);
     onIncrementAnalysis();
-    onAddMember(`동료 ${analysisCount + 1}`, theirType, role);
-  }, [onIncrementAnalysis, onAddMember, analysisCount, theirType, role]);
+  }, [onIncrementAnalysis]);
+
+  const handleSaveNickname = () => {
+    if (!nickname.trim()) return;
+    onAddMember(nickname.trim(), theirType, role);
+    setNicknameSaved(true);
+  };
 
   const handleUnlockDetailed = () => {
     showRewardedAd({
@@ -105,6 +112,39 @@ export default function ChemistryResult({
           </div>
         )}
       </ResultCard>
+
+      {!nicknameSaved ? (
+        <div className="mt-4 bg-white rounded-2xl p-4 border border-gray-200">
+          <p className="text-sm font-bold text-gray-700 mb-2">📋 도감에 추가하기</p>
+          <div className="flex gap-2">
+            <input
+              type="text"
+              value={nickname}
+              onChange={e => setNickname(e.target.value)}
+              placeholder="닉네임 입력 (예: 김팀장)"
+              maxLength={10}
+              className="flex-1 px-3 py-2.5 bg-gray-50 rounded-xl border border-gray-200 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-300"
+            />
+            <button
+              onClick={handleSaveNickname}
+              disabled={!nickname.trim()}
+              className={`px-4 py-2.5 rounded-xl text-sm font-bold transition-all ${
+                nickname.trim()
+                  ? 'bg-blue-500 text-white active:scale-[0.97]'
+                  : 'bg-gray-200 text-gray-400'
+              }`}
+            >
+              저장
+            </button>
+          </div>
+        </div>
+      ) : (
+        <div className="mt-4 p-3 bg-indigo-50 rounded-xl text-center">
+          <p className="text-xs text-indigo-700 font-medium">
+            📋 {nickname}님이 도감에 추가되었습니다!
+          </p>
+        </div>
+      )}
 
       {!showDetailed ? (
         <button
