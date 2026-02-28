@@ -13,7 +13,7 @@ interface CollectionProps {
   onRemoveMember: (id: string) => void;
 }
 
-const MAX_MEMBERS = 30;
+const MAX_MEMBERS = 15;
 
 const ROLE_LABELS: Record<string, string> = {
   boss: '상사',
@@ -188,9 +188,9 @@ export default function Collection({ myType, members, onAddMember, onRemoveMembe
 }
 
 function scoreToGrade(score: number): 'S' | 'A' | 'B' | 'C' | 'F' {
-  if (score >= 90) return 'S';
-  if (score >= 75) return 'A';
-  if (score >= 55) return 'B';
-  if (score >= 35) return 'C';
+  if (score >= 85) return 'S';
+  if (score >= 65) return 'A';
+  if (score >= 45) return 'B';
+  if (score >= 25) return 'C';
   return 'F';
 }

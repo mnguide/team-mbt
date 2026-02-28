@@ -219,9 +219,9 @@ export default function TeamInsights({ myType, members }: TeamInsightsProps) {
 }
 
 function scoreToGrade(score: number): Grade {
-  if (score >= 90) return 'S';
-  if (score >= 75) return 'A';
-  if (score >= 55) return 'B';
-  if (score >= 35) return 'C';
+  if (score >= 85) return 'S';
+  if (score >= 65) return 'A';
+  if (score >= 45) return 'B';
+  if (score >= 25) return 'C';
   return 'F';
 }
