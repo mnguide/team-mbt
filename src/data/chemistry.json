@@ -1,0 +1,253 @@
+{
+  "axisTemplates": {
+    "E-E": {
+      "synergy": "에너지 넘치는 조합! 회의실이 불타오를 수 있음",
+      "conflict": "둘 다 말이 많아서 경청이 부족할 수 있음",
+      "tip": "번갈아 가며 주도권을 나누세요"
+    },
+    "I-I": {
+      "synergy": "서로의 공간을 존중하는 평화로운 관계",
+      "conflict": "소통 부족으로 오해가 쌓일 수 있음",
+      "tip": "정기적으로 짧게라도 소통 시간을 만드세요"
+    },
+    "E-I": {
+      "synergy": "외향이 분위기를 만들고 내향이 깊이를 더함",
+      "conflict": "에너지 레벨 차이로 피로감 발생 가능",
+      "tip": "내향인의 혼자만의 시간을 존중해주세요"
+    },
+    "S-S": {
+      "synergy": "현실적이고 구체적인 목표를 향해 착착 진행",
+      "conflict": "새로운 아이디어에 둘 다 소극적일 수 있음",
+      "tip": "가끔은 틀을 벗어난 브레인스토밍을 시도하세요"
+    },
+    "N-N": {
+      "synergy": "아이디어가 끝없이 솟아나는 창의력 콤보",
+      "conflict": "실행력이 부족해서 공중에 뜰 수 있음",
+      "tip": "아이디어 중 하나는 반드시 실행으로 옮기세요"
+    },
+    "S-N": {
+      "synergy": "직관이 방향을 잡고 현실주의가 실현시킴",
+      "conflict": "\"현실적으로...\" vs \"가능성을 보면...\" 대립",
+      "tip": "서로의 관점이 보완적이라는 걸 인정하세요"
+    },
+    "T-T": {
+      "synergy": "효율적이고 논리적인 의사결정 가능",
+      "conflict": "감정 배려가 빠져서 차갑게 느껴질 수 있음",
+      "tip": "결정 후 팀원 감정도 한번 체크해주세요"
+    },
+    "F-F": {
+      "synergy": "따뜻하고 공감 넘치는 사이, 심리적 안전감 최고",
+      "conflict": "어려운 결정을 미루거나 갈등을 회피할 수 있음",
+      "tip": "때로는 불편해도 직접적인 피드백이 필요해요"
+    },
+    "T-F": {
+      "synergy": "논리와 공감의 균형 — 최적의 의사결정 조합",
+      "conflict": "\"왜 그렇게 차가워?\" vs \"왜 그렇게 감정적이야?\"",
+      "tip": "T는 감정을 인정하고, F는 논리를 수용하세요"
+    },
+    "J-J": {
+      "synergy": "계획적이고 체계적 — 프로젝트가 착착 진행",
+      "conflict": "\"내 계획이 맞아\" vs \"내 계획이 맞아\" 충돌",
+      "tip": "역할 분담을 명확히 하고 각자 영역을 존중하세요"
+    },
+    "P-P": {
+      "synergy": "유연하고 적응력 좋은 조합, 변화에 강함",
+      "conflict": "마감? 그게 뭐였지? — 일정 관리 위기",
+      "tip": "둘 중 한 명이라도 마감을 체크하는 역할을 맡으세요"
+    },
+    "J-P": {
+      "synergy": "J가 구조를 만들고 P가 유연성을 더함",
+      "conflict": "\"계획대로 해!\" vs \"좀 유연하게 가자~\"",
+      "tip": "큰 틀은 J가, 세부 실행은 P에게 자유를 주세요"
+    }
+  },
+  "gradeThresholds": {
+    "S": 90,
+    "A": 75,
+    "B": 55,
+    "C": 35,
+    "F": 0
+  },
+  "gradeLabels": {
+    "S": "천생연분 직장 소울메이트",
+    "A": "찰떡궁합 든든한 파트너",
+    "B": "무난한 비즈니스 관계",
+    "C": "좀 노력이 필요한 사이",
+    "F": "서바이벌 모드 돌입"
+  },
+  "roleModifiers": {
+    "leader": {
+      "prefix": "이 팀원에게",
+      "tipStyle": "리더십 관점에서",
+      "examples": ["피드백은 {method}으로", "업무 지시는 {method}이 효과적", "동기부여는 {method}로"]
+    },
+    "peer": {
+      "prefix": "이 동료와",
+      "tipStyle": "협업 관점에서",
+      "examples": ["점심은 {method}", "협업할 때 {method}", "의견 충돌 시 {method}"]
+    },
+    "junior": {
+      "prefix": "이 선배에게",
+      "tipStyle": "후배 관점에서",
+      "examples": ["보고는 {method}으로", "질문할 때 {method}", "인정받으려면 {method}"]
+    }
+  },
+  "overrides": {
+    "ENFP-INTJ": {
+      "grade": "A",
+      "score": 82,
+      "synergy": "ENFP의 아이디어 + INTJ의 실행력 = 무적 콤보",
+      "conflict": "ENFP의 감정 폭풍에 INTJ가 셧다운될 수 있음",
+      "specialTip": "ENFP가 방향을 제시하고 INTJ가 로드맵을 짜면 완벽"
+    },
+    "ESTJ-INFP": {
+      "grade": "C",
+      "score": 30,
+      "synergy": "서로 부족한 점을 채워줄 수 있는 보완적 관계",
+      "conflict": "업무 스타일이 정반대 — 마찰 불가피",
+      "specialTip": "ESTJ는 지시 대신 제안으로, INFP에게는 이유를 설명해주세요"
+    },
+    "ENTJ-ENTJ": {
+      "grade": "B",
+      "score": 60,
+      "synergy": "두 리더의 만남 — 추진력은 최강",
+      "conflict": "주도권 싸움이 전쟁 수준으로 격화될 수 있음",
+      "specialTip": "영역을 명확히 나누고 서로의 주도권을 인정하세요"
+    },
+    "ISFJ-ENTP": {
+      "grade": "B",
+      "score": 55,
+      "synergy": "ENTP의 아이디어를 ISFJ가 현실로 만듦",
+      "conflict": "ENTP의 무신경함에 ISFJ가 상처받을 수 있음",
+      "specialTip": "ENTP는 ISFJ의 노력에 감사를 표현하세요, 진심으로"
+    },
+    "INFJ-ENFP": {
+      "grade": "S",
+      "score": 95,
+      "synergy": "깊은 대화 + 창의적 에너지 = 환상의 콤비",
+      "conflict": "둘 다 이상주의라 현실 업무가 밀릴 수 있음",
+      "specialTip": "꿈 이야기는 점심에, 업무 시간엔 현실에 집중하세요"
+    },
+    "ISTP-ESFJ": {
+      "grade": "C",
+      "score": 38,
+      "synergy": "ESFJ의 따뜻함이 ISTP의 냉정함을 녹일 수 있음",
+      "conflict": "ISTP의 무관심이 ESFJ에게는 큰 상처",
+      "specialTip": "ISTP는 가끔 리액션을 해주고, ESFJ는 혼자 있을 시간을 주세요"
+    },
+    "ESTP-ISTJ": {
+      "grade": "C",
+      "score": 40,
+      "synergy": "행동력(ESTP) + 꼼꼼함(ISTJ) = 실행 파워",
+      "conflict": "\"일단 해보자\" vs \"계획부터 세우자\" 끝없는 대립",
+      "specialTip": "간단한 건 ESTP 방식으로, 중요한 건 ISTJ 방식으로 타협하세요"
+    },
+    "ENFJ-INFP": {
+      "grade": "S",
+      "score": 92,
+      "synergy": "ENFJ의 리더십 + INFP의 창의성 = 영감 가득한 팀",
+      "conflict": "ENFJ가 너무 밀어붙이면 INFP가 움츠러듦",
+      "specialTip": "ENFJ는 제안으로, INFP는 자기 페이스로 — 결과는 놀라울 것"
+    },
+    "INTP-ESFP": {
+      "grade": "B",
+      "score": 50,
+      "synergy": "ESFP의 에너지가 INTP를 세상 밖으로 끌어냄",
+      "conflict": "깊이(INTP) vs 넓이(ESFP) — 관심사가 안 맞을 수 있음",
+      "specialTip": "서로의 세계를 경험해보면 의외의 시너지가 생겨요"
+    },
+    "ISTJ-ENFP": {
+      "grade": "C",
+      "score": 35,
+      "synergy": "정반대라서 오히려 배울 게 많은 관계",
+      "conflict": "\"계획대로!\" vs \"흐름대로~\" 매일이 전쟁",
+      "specialTip": "서로를 바꾸려 하지 말고, 다름을 인정하면 최강 팀이 됩니다"
+    },
+    "ESFJ-INTJ": {
+      "grade": "C",
+      "score": 32,
+      "synergy": "ESFJ의 팀워크 + INTJ의 전략 = 의외로 강력",
+      "conflict": "감성 소통 vs 효율 소통 — 코드가 전혀 다름",
+      "specialTip": "업무는 INTJ 스타일로, 관계는 ESFJ 스타일로 나누세요"
+    },
+    "INFP-INFP": {
+      "grade": "A",
+      "score": 80,
+      "synergy": "서로를 깊이 이해하는 영혼의 동반자",
+      "conflict": "현실 업무 누가 할지 서로 미루기 가능",
+      "specialTip": "꿈을 공유하되 현실적인 역할 분담은 명확히 하세요"
+    },
+    "ENTJ-ISFP": {
+      "grade": "C",
+      "score": 33,
+      "synergy": "ENTJ의 추진력이 ISFP의 창의성에 날개를 달아줌",
+      "conflict": "ENTJ의 강압적 스타일에 ISFP가 질식할 수 있음",
+      "specialTip": "ENTJ는 부드럽게, ISFP는 의견을 더 적극적으로 표현하세요"
+    },
+    "ENTP-INFJ": {
+      "grade": "S",
+      "score": 91,
+      "synergy": "지적 대화의 끝판왕 콤비, 서로 끝없이 자극",
+      "conflict": "ENTP의 논쟁을 INFJ가 인신공격으로 받아들일 수 있음",
+      "specialTip": "ENTP는 논쟁의 의도를 밝히고, INFJ는 논리와 감정을 분리하세요"
+    },
+    "ESTP-ISFJ": {
+      "grade": "B",
+      "score": 52,
+      "synergy": "ESTP의 행동력 + ISFJ의 세심함 = 빈틈없는 실행",
+      "conflict": "ESTP의 돌발 행동에 ISFJ가 스트레스받을 수 있음",
+      "specialTip": "ESTP는 미리 알려주고, ISFJ는 유연성을 조금만 늘려보세요"
+    }
+  },
+  "teamTypes": [
+    {
+      "id": "battle",
+      "name": "전투형 팀",
+      "emoji": "⚔️",
+      "description": "목표를 향해 돌진하는 전사들의 팀. 성과는 나오지만 가끔 서로 칼을 겨눌 수 있음.",
+      "condition": "T 비율 ≥ 60% AND J 비율 ≥ 50%"
+    },
+    {
+      "id": "healing",
+      "name": "힐링형 팀",
+      "emoji": "🌿",
+      "description": "따뜻하고 평화로운 팀. 갈등은 적지만 가끔 결단력이 부족할 수 있음.",
+      "condition": "F 비율 ≥ 60% AND I 비율 ≥ 50%"
+    },
+    {
+      "id": "chaos",
+      "name": "카오스형 팀",
+      "emoji": "🌪️",
+      "description": "예측 불가능한 에너지! 창의적이지만 프로젝트 마감은 항상 아슬아슬.",
+      "condition": "P 비율 ≥ 60% AND E 비율 ≥ 50%"
+    },
+    {
+      "id": "think-tank",
+      "name": "싱크탱크형 팀",
+      "emoji": "🧪",
+      "description": "아이디어와 분석의 향연. 회의가 세미나가 되는 지식인들의 모임.",
+      "condition": "N 비율 ≥ 60% AND T 비율 ≥ 50%"
+    },
+    {
+      "id": "family",
+      "name": "가족형 팀",
+      "emoji": "🏠",
+      "description": "서로 챙기고 보살피는 든든한 팀. 회식이 아니라 가족 모임 같은 분위기.",
+      "condition": "F 비율 ≥ 60% AND E 비율 ≥ 50%"
+    },
+    {
+      "id": "machine",
+      "name": "기계형 팀",
+      "emoji": "⚙️",
+      "description": "정확하고 효율적인 시스템 팀. 감정은 좀 부족하지만 결과물은 확실.",
+      "condition": "S 비율 ≥ 60% AND J 비율 ≥ 50%"
+    },
+    {
+      "id": "balanced",
+      "name": "밸런스형 팀",
+      "emoji": "⚖️",
+      "description": "다양한 유형이 모인 균형 잡힌 팀. 시너지 터지면 무적, 안 맞으면 혼돈.",
+      "condition": "default"
+    }
+  ]
+}
