@@ -94,14 +94,14 @@ export default function MyCard({ myType, onSetMyType }: MyCardProps) {
             <InfoRow icon="💬" label="소통 방식" value={info.commStyle} />
             <InfoRow icon="💪" label="강점" value={info.strength} />
             <InfoRow icon="😅" label="약점" value={info.weakness} />
-            <InfoRow icon="💣" label="지뢰" value={info.landmine} />
+            <InfoRow icon="🚫" label="싫어하는 것" value={info.landmine} />
             <InfoRow icon="🍱" label="점심 스타일" value={info.lunchStyle} />
             <InfoRow icon="📱" label="슬랙 스타일" value={info.slackStyle} />
           </div>
 
           <div className="mt-4 p-3 bg-yellow-50 rounded-xl">
             <p className="text-xs text-yellow-800">
-              💡 <span className="font-bold">생존 팁:</span> {info.survivalTip}
+              💡 <span className="font-bold">이 유형 사용설명서:</span> {info.survivalTip}
             </p>
           </div>
         </div>
