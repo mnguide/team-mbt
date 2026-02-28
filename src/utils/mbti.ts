@@ -7,7 +7,7 @@ export type MbtiType =
   | 'ESTP' | 'ESFP' | 'ENFP' | 'ENTP'
   | 'ESTJ' | 'ESFJ' | 'ENFJ' | 'ENTJ';
 
-export type Role = 'leader' | 'peer' | 'junior';
+export type Role = 'boss' | 'senior' | 'peer' | 'junior';
 
 export type Grade = 'S' | 'A' | 'B' | 'C' | 'F';
 
@@ -132,28 +132,37 @@ export function calculateChemistry(
     }
   }
 
-  // Role-based tip
-  const roleData = chemistryData.roleModifiers[role];
+  // Role-based tip (role = 상대의 역할)
   const theirInfo = getTypeInfo(theirType);
   let roleTip: string;
 
-  if (role === 'leader') {
-    if (theirType[2] === 'F') {
-      roleTip = `${roleData.prefix} 피드백은 부드럽게 전달하세요. ${theirInfo.commStyle}`;
+  if (role === 'boss') {
+    // 상대가 상사 → 보고/지시 받는 관점
+    if (theirType[3] === 'J') {
+      roleTip = `이 상사에게 보고는 결론부터, 정해진 형식을 지키세요.`;
     } else {
-      roleTip = `${roleData.prefix} 논리적 근거와 함께 지시하면 효과적입니다.`;
+      roleTip = `이 상사에게 유연하게 접근하되 핵심은 빠뜨리지 마세요.`;
+    }
+  } else if (role === 'senior') {
+    // 상대가 선배 → 조언 구하고 배우는 관점
+    if (theirType[2] === 'F') {
+      roleTip = `이 선배에게 질문할 때 감정적 교감을 먼저 보여주세요.`;
+    } else {
+      roleTip = `이 선배에게 질문할 때 핵심 포인트를 정리해서 가세요.`;
     }
   } else if (role === 'junior') {
-    if (theirType[3] === 'J') {
-      roleTip = `${roleData.prefix} 보고는 결론부터, 정해진 형식을 지키세요.`;
+    // 상대가 후배 → 가르치고 이끄는 관점
+    if (theirType[2] === 'F') {
+      roleTip = `이 후배에게 피드백은 부드럽게 전달하세요. ${theirInfo.commStyle}`;
     } else {
-      roleTip = `${roleData.prefix} 유연하게 접근하되 핵심은 빠뜨리지 마세요.`;
+      roleTip = `이 후배에게 논리적 근거와 함께 지시하면 효과적입니다.`;
     }
   } else {
+    // 동료
     if (theirType[0] === 'I') {
-      roleTip = `${roleData.prefix} 1:1로 소통하고 혼자 시간을 존중해주세요.`;
+      roleTip = `이 동료와 1:1로 소통하고 혼자 시간을 존중해주세요.`;
     } else {
-      roleTip = `${roleData.prefix} 에너지 맞춰주면 좋은 동료가 됩니다.`;
+      roleTip = `이 동료와 에너지 맞춰주면 좋은 파트너가 됩니다.`;
     }
   }
 

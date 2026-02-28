@@ -8,9 +8,10 @@ interface ChemistryProps {
 }
 
 const ROLES: { value: Role; label: string; emoji: string; desc: string }[] = [
-  { value: 'leader', label: '리더', emoji: '👔', desc: '내가 이 사람의 상사' },
-  { value: 'peer', label: '동료', emoji: '🤝', desc: '같은 위치의 동료' },
-  { value: 'junior', label: '후배', emoji: '🌱', desc: '내가 이 사람의 후배' },
+  { value: 'boss', label: '상사', emoji: '👔', desc: '나의 팀장/매니저예요' },
+  { value: 'senior', label: '선배', emoji: '📌', desc: '같은 팀 선배예요' },
+  { value: 'peer', label: '동료', emoji: '🤝', desc: '같은 위치의 동료예요' },
+  { value: 'junior', label: '후배', emoji: '🌱', desc: '나보다 아랫사람이에요' },
 ];
 
 export default function Chemistry({ myType }: ChemistryProps) {
@@ -51,7 +52,7 @@ export default function Chemistry({ myType }: ChemistryProps) {
       </div>
 
       <div className="mb-6">
-        <p className="text-sm font-bold text-gray-700 mb-3">나의 역할은?</p>
+        <p className="text-sm font-bold text-gray-700 mb-3">상대의 역할은?</p>
         <div className="flex gap-2">
           {ROLES.map(r => (
             <button

@@ -76,20 +76,21 @@
     "F": "서바이벌 모드 돌입"
   },
   "roleModifiers": {
-    "leader": {
-      "prefix": "이 팀원에게",
-      "tipStyle": "리더십 관점에서",
-      "examples": ["피드백은 {method}으로", "업무 지시는 {method}이 효과적", "동기부여는 {method}로"]
+    "boss": {
+      "prefix": "이 상사에게",
+      "tipStyle": "윗사람 대응 관점에서"
+    },
+    "senior": {
+      "prefix": "이 선배에게",
+      "tipStyle": "선배 대응 관점에서"
     },
     "peer": {
       "prefix": "이 동료와",
-      "tipStyle": "협업 관점에서",
-      "examples": ["점심은 {method}", "협업할 때 {method}", "의견 충돌 시 {method}"]
+      "tipStyle": "협업 관점에서"
     },
     "junior": {
-      "prefix": "이 선배에게",
-      "tipStyle": "후배 관점에서",
-      "examples": ["보고는 {method}으로", "질문할 때 {method}", "인정받으려면 {method}"]
+      "prefix": "이 후배에게",
+      "tipStyle": "후배 육성 관점에서"
     }
   },
   "overrides": {
