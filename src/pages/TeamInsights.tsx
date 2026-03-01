@@ -109,12 +109,11 @@ export default function TeamInsights({ myType, members }: TeamInsightsProps) {
             onClick={() => navigate(`/member/${insight.keyConnector!.id}`, { replace: true })}
             className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 text-center active:scale-[0.97] transition-transform"
           >
-            <p className="text-[10px] text-gray-400 mb-1">핵심 연결자</p>
+            <p className="text-[10px] text-gray-400 mb-1">팀 궁합 최고</p>
             <span className="text-2xl">{keyConnectorInfo.emoji}</span>
             <p className="text-xs font-bold text-gray-800 mt-1">
               {memberLabel(insight.keyConnector)}
             </p>
-            <p className="text-[10px] text-emerald-600">팀 평균 궁합 최고</p>
           </button>
         )}
         {insight.isolationRisk && isolationInfo && (
@@ -122,12 +121,11 @@ export default function TeamInsights({ myType, members }: TeamInsightsProps) {
             onClick={() => navigate(`/member/${insight.isolationRisk!.id}`, { replace: true })}
             className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 text-center active:scale-[0.97] transition-transform"
           >
-            <p className="text-[10px] text-gray-400 mb-1">고립 위험</p>
+            <p className="text-[10px] text-gray-400 mb-1">팀 궁합 최저</p>
             <span className="text-2xl">{isolationInfo.emoji}</span>
             <p className="text-xs font-bold text-gray-800 mt-1">
               {memberLabel(insight.isolationRisk)}
             </p>
-            <p className="text-[10px] text-red-500">팀 평균 궁합 최저</p>
           </button>
         )}
       </div>
