@@ -153,8 +153,11 @@ export function computeTeamInsight(
   // Key connector: highest average score across all their connections
   const memberInsights = members.map(m => computeMemberInsight(m, allPairs));
   const sorted = [...memberInsights].sort((a, b) => b.avgScore - a.avgScore);
-  const keyConnector = sorted.length > 0 ? sorted[0].member : null;
-  const isolationRisk = sorted.length > 0 ? sorted[sorted.length - 1].member : null;
+  const best = sorted.length > 0 ? sorted[0] : null;
+  const worst = sorted.length > 0 ? sorted[sorted.length - 1] : null;
+  // 3명 이상이고 점수 차이가 있을 때만 표시
+  const keyConnector = members.length >= 3 && best ? best.member : null;
+  const isolationRisk = members.length >= 3 && worst && best && worst.avgScore < best.avgScore ? worst.member : null;
 
   // Best triple
   const tripleResult = findBestTriple(members, allPairs);
@@ -167,8 +170,8 @@ export function computeTeamInsight(
 
   return {
     synergyScore,
-    keyConnector: keyConnector !== isolationRisk ? keyConnector : keyConnector,
-    isolationRisk: members.length > 1 ? isolationRisk : null,
+    keyConnector,
+    isolationRisk,
     bestTriple: tripleResult?.triple ?? null,
     bestTripleScore: tripleResult?.score ?? 0,
     mbtiDistribution,
